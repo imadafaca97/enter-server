@@ -21,37 +21,16 @@ export class provinciasService {
     });
     return proyectos;
   }
-  async addEmployer(dto) {
-    const employer = await prisma.empleado.create({
-      data: {
-        name: dto.name,
-        proyectosIds: dto.proyectos,
-      },
-    });
-    return employer;
-  }
-  async provinciasyempleados() {
+  async provinceInfo() {
     const provincia = await prisma.provincia.findMany({
       select: {
         name: true,
         path: true,
-        proyectos: {
-          select: {
-            empleados: true,
-          },
-        },
+        proyectos: true,
+        empleados: true,
+        id: true
       },
     });
     return provincia;
-  }
-  async addProyect(dto) {
-    const proyecto = await prisma.proyecto.create({
-      data: {
-        name: dto.name,
-        empleadosIds: '6272aceddecb9d12e790839d',
-        provinciaId: dto.provinciaId,
-      },
-    });
-    return proyecto;
   }
 }

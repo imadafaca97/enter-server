@@ -8,20 +8,12 @@ export class provinciasController {
   getall() {
     return this.provinciasService.getall();
   }
-  @Get('getWithProyectos')
+  @Get('provinceInfo')
   getProyects() {
-    return this.provinciasService.provinciasyempleados();
+    return this.provinciasService.provinceInfo();
   }
   @Post('add')
   addProvincia(@Body() dto: any) {
     return this.provinciasService.addProvincia(dto);
-  }
-  @Post('addProyect')
-  addProyect(@Body() dto: any) {
-    return this.provinciasService.addProyect(dto);
-  }
-  @Post('add-employer')
-  addEmployer(@Body() dto: any) {
-    return this.provinciasService.addEmployer(dto);
   }
 }

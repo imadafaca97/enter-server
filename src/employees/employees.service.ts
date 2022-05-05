@@ -5,36 +5,23 @@ const prisma = new PrismaClient();
 @Injectable({})
 export class employeesService {
 
-  async addEmployee(dto) {
-    const post = await prisma.empleado.create({
+  async addEmployer(dto) {
+    const employer = await prisma.empleado.create({
       data: {
         name: dto.name,
-        proyectosIds: dto.proyectosIds,
+        proyectosIds: dto.proyectos,
+        provinciaId: dto.provincia,
       },
     });
-    return post;
+    return employer;
   }
   async getall() {
     console.log('Hola Empleado')
-    const proyectos = await prisma.empleado.findMany({
+    const empleados = await prisma.empleado.findMany({
       include: {
         proyectos: true,
       },
     });
-    return proyectos;
-  }
-  async provinciasyempleados() {
-    const provincia = await prisma.provincia.findMany({
-      select: {
-        name: true,
-        path: true,
-        proyectos: {
-          select: {
-            empleados: true,
-          },
-        },
-      },
-    });
-    return provincia;
+    return empleados;
   }
 }
