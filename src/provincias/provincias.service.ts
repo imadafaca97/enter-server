@@ -13,6 +13,7 @@ export class provinciasService {
     return post;
   }
   async getall() {
+    console.log('Hola')
     const proyectos = await prisma.provincia.findMany({
       include: {
         proyectos: true,
