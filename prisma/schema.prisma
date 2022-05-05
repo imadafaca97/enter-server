@@ -17,6 +17,7 @@ model Provincia {
   name String
   path String
   proyectos Proyecto[]
+  empleados Empleado[]
 }
 
 model Proyecto {
@@ -36,7 +37,8 @@ model Empleado {
   updatedAt DateTime @updatedAt
   name String
   proyectosIds String[] @db.ObjectId
-
+  provinciaId String
+  
+  provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
 }
-

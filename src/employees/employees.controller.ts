@@ -9,10 +9,6 @@ export class employeesController {
   getall() {
     return this.employeesService.getall();
   }
-  @Get('getWithProyectos')
-  getProyects() {
-    return this.employeesService.provinciasyempleados();
-  }
   @Post('add')
   addEmployee(@Query() dto: any) {
     return this.employeesService.addEmployee(dto);
