@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Provincia {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  path String
+  proyectos Proyecto[]
+}
+
+model Proyecto {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  empleadosIds String[] @db.ObjectId
+  provinciaId String
+  
+  provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  empleados Empleado[] @relation(fields: [empleadosIds], references: [id])
+}
+model Empleado {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  proyectosIds String[] @db.ObjectId
+
+  proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
+}
+
