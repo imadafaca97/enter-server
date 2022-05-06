@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 @Injectable({})
 export class employeesService {
-
   async addEmployer(dto) {
     const employer = await prisma.empleado.create({
       data: {
@@ -16,12 +15,7 @@ export class employeesService {
     return employer;
   }
   async getall() {
-    console.log('Hola Empleado')
-    const empleados = await prisma.empleado.findMany({
-      include: {
-        proyectos: true,
-      },
-    });
+    const empleados = await prisma.empleado.findMany({});
     return empleados;
   }
 }
