@@ -11,6 +11,11 @@ export class employeesController {
   }
   @Post('add')
   addEmployee(@Query() dto: any) {
-    return this.employeesService.addEmployer(dto);
+    return this.employeesService.addEmployee(dto);
+  }
+
+  @Post('update')
+  updateEmployee(@Query() dto: any) {
+    return this.employeesService.updateEmployee(dto);
   }
 }

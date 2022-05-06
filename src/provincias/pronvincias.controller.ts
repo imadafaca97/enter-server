@@ -12,8 +12,5 @@ export class provinciasController {
   getProyects() {
     return this.provinciasService.provinceInfo();
   }
-  @Post('add')
-  addProvincia(@Body() dto: any) {
-    return this.provinciasService.addProvincia(dto);
-  }
+  
 }
