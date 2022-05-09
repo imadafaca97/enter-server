@@ -42,3 +42,16 @@ model Empleado {
   provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
 }
+
+model Users {
+  uid String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  docNumber String
+  name String
+  lastName String
+  email String
+  isSupervisor Boolean
+  userCreated Boolean
+}
+
