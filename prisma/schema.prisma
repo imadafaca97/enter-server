@@ -62,6 +62,6 @@ model EmployeesEntry {
   updatedAt DateTime @updatedAt
 
   employeeID String
-  employe Empleado @relation(fields: [employeeID], references: [id])
+  employee Empleado @relation(fields: [employeeID], references: [id])
 }
 

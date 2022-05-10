@@ -65,4 +65,18 @@ export class employeesService {
       return err;
     }
   }
+  async getEntries(dto) {
+    let entries = await prisma.employeesEntry.findMany({
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true
+          }
+        }
+      }
+    });
+    return entries;
+  }
 }
