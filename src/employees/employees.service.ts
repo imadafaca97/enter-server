@@ -4,20 +4,33 @@ const prisma = new PrismaClient();
 
 @Injectable({})
 export class employeesService {
-
-  async addEmployee(dto) {
+  async addEmployer(dto) {
     const employee = await prisma.empleado.create({
       data: {
         name: dto.name,
-        proyectosIds: dto.proyectos,
-        provinciaId: dto.provincia,
+        proyectosIds: dto.project,
+        provinciaId: dto.province,
       },
     });
     return employee;
   }
   async getall() {
-    const empleados = await prisma.empleado.findMany({});
+    const empleados = await prisma.empleado.findMany({
+      include: {
+        provincia: true,
+        proyectos: true,
+      },
+    });
     return empleados;
+  }
+  async getById(dto) {
+    console.log(dto);
+    const employee = await prisma.empleado.findFirst({
+      where: {
+        id: dto.id,
+      },
+    });
+    return employee;
   }
 
   async updateEmployee(dto) {
@@ -33,5 +46,37 @@ export class employeesService {
     });
     return employee;
   }
-
+  async employeEntry(dto) {
+    try {
+      let employee = await prisma.empleado.findFirst({
+        where: {
+          id: dto.employee,
+        },
+      });
+      if (employee) {
+        await prisma.employeesEntry.create({
+          data: {
+            employeeID: dto.employee,
+          },
+        });
+        return employee;
+      }
+    } catch (err) {
+      return err;
+    }
+  }
+  async getEntries(dto) {
+    let entries = await prisma.employeesEntry.findMany({
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true
+          }
+        }
+      }
+    });
+    return entries;
+  }
 }

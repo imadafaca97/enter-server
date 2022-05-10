@@ -39,7 +39,7 @@ model Empleado {
   proyectosIds String[] @db.ObjectId
   provinciaId String @default("6271b01ba5394f5c9e7cf63e")
   permits Permits[]
-  
+
   provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
 }
@@ -69,4 +69,13 @@ model Permits {
 
 
 
+
+model EmployeesEntry {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employeeID String
+  employee Empleado @relation(fields: [employeeID], references: [id])
+}
 

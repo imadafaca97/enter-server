@@ -5,13 +5,12 @@ const prisma = new PrismaClient();
 export class provinciasService {
  
   async getall() {
-    console.log('Hola')
-    const proyectos = await prisma.provincia.findMany({
+    const provincias = await prisma.provincia.findMany({
       include: {
         proyectos: true,
       },
     });
-    return proyectos;
+    return provincias;
   }
   async provinceInfo() {
     const provincia = await prisma.provincia.findMany({

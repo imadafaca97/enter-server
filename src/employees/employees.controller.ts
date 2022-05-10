@@ -9,13 +9,20 @@ export class employeesController {
   getall() {
     return this.employeesService.getall();
   }
-  @Post('add')
-  addEmployee(@Query() dto: any) {
-    return this.employeesService.addEmployee(dto);
+  @Get('getById')
+  getById(@Query() dto: any) {
+    return this.employeesService.getById(dto);
   }
-
-  @Post('update')
-  updateEmployee(@Query() dto: any) {
-    return this.employeesService.updateEmployee(dto);
+  @Get('getEntries')
+  getgetEntriesById(@Query() dto: any) {
+    return this.employeesService.getEntries(dto);
+  }
+  @Post('add')
+  addEmployee(@Body() dto: any) {
+    return this.employeesService.addEmployer(dto);
+  }
+  @Post('employeeEntry')
+  employeEntry(@Body() dto: any) {
+    return this.employeesService.employeEntry(dto);
   }
 }
