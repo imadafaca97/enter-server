@@ -14,7 +14,11 @@ export class employeesController {
     return this.employeesService.getById(dto);
   }
   @Post('add')
-  addEmployee(@Query() dto: any) {
+  addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
+  }
+  @Post('employeeEntry')
+  employeEntry(@Body() dto: any) {
+    return this.employeesService.employeEntry(dto);
   }
 }
