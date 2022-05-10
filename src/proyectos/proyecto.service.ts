@@ -8,7 +8,7 @@ export class ProyectoService {
     const proyecto = await prisma.proyecto.create({
       data: {
         name: dto.name,
-        empleadosIds: '6272aceddecb9d12e790839d',
+        empleadosIds: dto.empleadosIds,
         provinciaId: dto.provinciaId,
       },
     });
