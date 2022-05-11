@@ -8,6 +8,7 @@ export class employeesService {
     const employee = await prisma.empleado.create({
       data: {
         name: dto.name,
+        role: dto.role,
         proyectosIds: dto.project,
         provinciaId: dto.province,
       },
@@ -72,11 +73,13 @@ export class employeesService {
           select: {
             proyectos: true,
             provincia: true,
-            name: true
-          }
-        }
-      }
+            name: true,
+            role: true
+          },
+        },
+      },
     });
     return entries;
   }
+
 }
