@@ -1,4 +1,4 @@
-import {  Controller, Get, Inject, Post, Query } from '@nestjs/common';
+import {  Body, Controller, Get, Inject, Post } from '@nestjs/common';
 import { IUsersService } from './i-user.service';
 @Controller('users')
 export class UsersController {
@@ -10,19 +10,19 @@ export class UsersController {
   }
   @Post('add')
   getUser(@Body() dto: any) {
-    return this.usersService.addUser(dto);
+    return this._usersService.addUser(dto);
   }
   @Post('filterUsers')
   filterUsers(@Body() dto: any) {
-    return this.usersService.filterUsers(dto);
+    return this._usersService.filterUsers(dto);
   }
   @Post('editUser')
   editUser(@Body() dto: any) {
-    return this.usersService.editUser(dto);
+    return this._usersService.editUser(dto);
   }
   @Post('disableUser')
   disableUser(@Body() dto: any) {
-    return this.usersService.disableUser(dto);
+    return this._usersService.disableUser(dto);
   }
   
 }

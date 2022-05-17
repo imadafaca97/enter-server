@@ -14,14 +14,15 @@ export class UsersService implements IUsersService {
         email: dto.email,
         status: true,
         docNumber: dto.docNumber,
+        password: dto.password,
         userCreated: true,
-        isSupervisor: false,
-        roleID: dto.role,
+        roleID: dto.roleID,
       },
     });
     return user;
   }
-  async editUser(dto) {
+
+  async editUser(dto :Users) {
     const user = await prisma.users.update({
       where: {
         id: dto.id,
@@ -33,12 +34,12 @@ export class UsersService implements IUsersService {
         docNumber: dto.docNumber,
         password: dto.password,
         userCreated: true,
-        roleID: dto.role,
+        roleID: dto.roleID,
       },
     });
     return user;
   }
-  async disableUser(dto) {
+  async disableUser(dto: Users) {
     const user = await prisma.users.update({
       where: {
         id: dto.id,
@@ -54,14 +55,15 @@ export class UsersService implements IUsersService {
     const user = await prisma.users.findMany();
     return user;
   }
-  async filterUsers(dto) {
+
+  async filterUsers(dto : any) {
     let queryArgs = {
       where: {},
     };
-    if (dto.role) {
+    if (dto.roleID) {
       queryArgs = {
         where: {
-          roleID: dto.role,
+          roleID: dto.roleID,
         },
       };
     }
@@ -80,7 +82,7 @@ export class UsersService implements IUsersService {
     const users = await prisma.users.findMany(queryArgs);
     return users;
   }
-}
+
 
   async getByEmail(email : string): Promise<Partial<Users>> {
     const user = await prisma.users.findUnique({

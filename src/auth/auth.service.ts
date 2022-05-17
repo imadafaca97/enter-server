@@ -20,7 +20,7 @@ export class AuthService  implements IAuthService{
         await this.validateSignUpEmail(userDto.email);
         userDto.password = await this.hashPassword(userDto.password);
 
-       const user = await this._usersService.addUser(userDto as Users)
+       const user = await this._usersService.addUser(userDto as any)
 
         const userCopy = {
             ...user
@@ -78,10 +78,10 @@ export class AuthService  implements IAuthService{
         return hashedPassword;
     }
     
-    private getToken ({uid,name,lastName,email}: Users) : string{
+    private getToken ({id,name,lastName,email}: Users) : string{
         
         return this._jwtService.sign({
-            uid,
+            id,
             name: `${name} ${lastName}`,
             email
         })
