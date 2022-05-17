@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, userRole } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable()
 export class RoleService {
-  async addRole(dto) {
+  async addRole(dto : userRole) {
     await prisma.userRole.create({
         data: {
           name: dto.name,
@@ -28,7 +28,7 @@ export class RoleService {
     });
     return roles;
   }
-  async editRole(dto) {
+  async editRole(dto : userRole) {
     let edited = await prisma.userRole.update({
       where: {
         id: dto.id,
@@ -40,7 +40,7 @@ export class RoleService {
     });
     return edited
   }
-  async disableRol(dto) {
+  async disableRol(dto : userRole) {
     let disabled = await prisma.userRole.update({
       where: {
         id: dto.id,
