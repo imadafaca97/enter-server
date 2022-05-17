@@ -43,6 +43,7 @@ model Empleado {
   permits Permits[]
   entryID  EmployeesEntry?
 
+
   provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
 }
@@ -54,9 +55,9 @@ model Users {
   docNumber String
   name String
   lastName String
-  email String
   status Boolean
-  isSupervisor Boolean
+  email String @unique
+  password String
   userCreated Boolean
   roleID String
   @@fulltext([name])

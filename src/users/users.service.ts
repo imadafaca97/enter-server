@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Users } from '@prisma/client';
+import { IUsersService } from './i-user.service';
 const prisma = new PrismaClient();
 
-@Injectable({})
-export class usersService {
-  async addUser(dto) {
+@Injectable()
+export class UsersService implements IUsersService {
+
+  async addUser(dto : Users) {
     const user = await prisma.users.create({
       data: {
         name: dto.name,
@@ -29,8 +31,8 @@ export class usersService {
         lastName: dto.lastName,
         email: dto.email,
         docNumber: dto.docNumber,
+        password: dto.password,
         userCreated: true,
-        isSupervisor: false,
         roleID: dto.role,
       },
     });
@@ -47,8 +49,9 @@ export class usersService {
     });
     return user;
   }
-  async getall() {
-    const user = await prisma.users.findMany({});
+  
+  async getAll() {
+    const user = await prisma.users.findMany();
     return user;
   }
   async filterUsers(dto) {
@@ -76,5 +79,40 @@ export class usersService {
     }
     const users = await prisma.users.findMany(queryArgs);
     return users;
+  }
+}
+
+  async getByEmail(email : string): Promise<Partial<Users>> {
+    const user = await prisma.users.findUnique({
+      where: {
+        email
+      },
+      select: {
+        name : true,
+        lastName : true,
+        docNumber : true,
+        email : true, 
+        password : true
+      }
+    });
+
+    return user as Users;
+  }
+  
+  async getById(id : string){
+    const user = await prisma.users.findFirst({
+      where: {
+        id
+      },
+      select: {
+        name : true,
+        lastName : true,
+        docNumber : true,
+        email : true, 
+        password : true
+      }
+    });
+
+    return user as Users;
   }
 }
