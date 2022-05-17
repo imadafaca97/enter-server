@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Permits, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable({})
 export class permitsService {
 
-  async addPermit(dto) {
+  async addPermit(dto : Permits) {
     const user = await prisma.permits.create({
       data: {
       idEmployee: dto.idEmployee,
