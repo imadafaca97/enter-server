@@ -25,7 +25,6 @@ export class employeesService {
     return empleados;
   }
   async getById(dto) {
-    console.log(dto);
     const employee = await prisma.empleado.findFirst({
       where: {
         id: dto.id,
@@ -74,12 +73,11 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true
+            role: true,
           },
         },
       },
     });
     return entries;
   }
-
 }

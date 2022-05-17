@@ -9,8 +9,20 @@ export class usersController {
     return this.usersService.getall();
   }
   @Post('add')
-  getUser(@Query() dto: any) {
+  getUser(@Body() dto: any) {
     return this.usersService.addUser(dto);
+  }
+  @Post('filterUsers')
+  filterUsers(@Body() dto: any) {
+    return this.usersService.filterUsers(dto);
+  }
+  @Post('editUser')
+  editUser(@Body() dto: any) {
+    return this.usersService.editUser(dto);
+  }
+  @Post('disableUser')
+  disableUser(@Body() dto: any) {
+    return this.usersService.disableUser(dto);
   }
   
 }

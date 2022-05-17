@@ -4,8 +4,9 @@ import { employeesModule } from './employees/employees.module';
 import { moduleProyecto } from './proyectos/proyecto.module';
 import { usersModule } from './users/users.module';
 import { permitssModule } from './permits/permits.module';
+import { roleModule } from './roles/role.module';
 
 @Module({
-  imports: [provinciasModule, employeesModule, moduleProyecto,usersModule,permitssModule],
+  imports: [provinciasModule, employeesModule, moduleProyecto,usersModule,permitssModule, roleModule],
 })
 export class AppModule {}
