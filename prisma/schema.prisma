@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -48,17 +49,31 @@ model Empleado {
 }
 
 model Users {
-  uid String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   docNumber String
   name String
   lastName String
+  status Boolean
   email String @unique
   password String
-  isAdmin Boolean
   userCreated Boolean
+  roleID String
+  @@fulltext([name])
+  role userRole @relation(fields: [roleID], references: [id])
 }
+
+model userRole {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String @unique
+  status Boolean @default(true)
+  description String
+  users Users[]
+}
+
 model Permits {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())

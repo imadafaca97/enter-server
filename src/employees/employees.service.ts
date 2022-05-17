@@ -74,12 +74,11 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true
+            role: true,
           },
         },
       },
     });
     return entries;
   }
-
 }

@@ -8,9 +8,21 @@ export class UsersController {
   async getAll() {
     return await this._usersService.getAll();
   }
-  @Post()
-  getUser(@Query() dto: any) {
-    return this._usersService.addUser(dto);
+  @Post('add')
+  getUser(@Body() dto: any) {
+    return this.usersService.addUser(dto);
+  }
+  @Post('filterUsers')
+  filterUsers(@Body() dto: any) {
+    return this.usersService.filterUsers(dto);
+  }
+  @Post('editUser')
+  editUser(@Body() dto: any) {
+    return this.usersService.editUser(dto);
+  }
+  @Post('disableUser')
+  disableUser(@Body() dto: any) {
+    return this.usersService.disableUser(dto);
   }
   
 }
