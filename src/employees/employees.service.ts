@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 @Injectable({})
 export class employeesService {
-  async addEmployer(dto : Empleado) {
+  async addEmployer(dto: Empleado) {
     const employee = await prisma.empleado.create({
       data: {
         name: dto.name,
@@ -24,7 +24,7 @@ export class employeesService {
     });
     return empleados;
   }
-  async getById(dto : Empleado) {
+  async getById(dto: Empleado) {
     console.log(dto);
     const employee = await prisma.empleado.findFirst({
       where: {
@@ -34,7 +34,7 @@ export class employeesService {
     return employee;
   }
 
-  async updateEmployee(dto : Empleado) {
+  async updateEmployee(dto: Empleado) {
     const employee = await prisma.empleado.update({
       where: {
         id: dto.id,
@@ -47,7 +47,7 @@ export class employeesService {
     });
     return employee;
   }
-  async employeEntry(dto : EmployeesEntry) {
+  async employeEntry(dto: EmployeesEntry) {
     try {
       let employee = await prisma.empleado.findFirst({
         where: {
@@ -66,7 +66,7 @@ export class employeesService {
       return err;
     }
   }
-  async getEntries(dto : EmployeesEntry) {
+  async getEntries(dto: EmployeesEntry) {
     let entries = await prisma.employeesEntry.findMany({
       include: {
         employee: {

@@ -5,8 +5,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService implements IUsersService {
-
-  async addUser(dto : Users) {
+  async addUser(dto: Users) {
     const user = await prisma.users.create({
       data: {
         name: dto.name,
@@ -22,7 +21,7 @@ export class UsersService implements IUsersService {
     return user;
   }
 
-  async editUser(dto :Users) {
+  async editUser(dto: Users) {
     const user = await prisma.users.update({
       where: {
         id: dto.id,
@@ -50,20 +49,20 @@ export class UsersService implements IUsersService {
     });
     return user;
   }
-  
+
   async getAll() {
     const user = await prisma.users.findMany();
     return user;
   }
 
-  async filterUsers(dto : any) {
+  async filterUsers(dto: any) {
     let queryArgs = {
       where: {},
     };
-    if (dto.roleID) {
+    if (dto.role) {
       queryArgs = {
         where: {
-          roleID: dto.roleID,
+          roleID: dto.role,
         },
       };
     }
@@ -77,42 +76,53 @@ export class UsersService implements IUsersService {
     }
     queryArgs.where = {
       status: true,
-      ...queryArgs.where
-    }
-    const users = await prisma.users.findMany(queryArgs);
+      ...queryArgs.where,
+    };
+    const users = await prisma.users.findMany({
+      ...queryArgs,
+      select: {
+        name: true,
+        docNumber: true,
+        email: true,
+        lastName: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     return users;
   }
-
-
-  async getByEmail(email : string): Promise<Partial<Users>> {
+  async getByEmail(email: string): Promise<Partial<Users>> {
     const user = await prisma.users.findUnique({
       where: {
-        email
+        email,
       },
       select: {
-        name : true,
-        lastName : true,
-        docNumber : true,
-        email : true, 
-        password : true
-      }
+        name: true,
+        lastName: true,
+        docNumber: true,
+        email: true,
+        password: true,
+      },
     });
 
     return user as Users;
   }
-  
-  async getById(id : string){
+
+  async getById(id: string) {
     const user = await prisma.users.findFirst({
       where: {
-        id
+        id,
       },
       select: {
-        name : true,
-        lastName : true,
-        docNumber : true,
-        email : true, 
-        password : true
-      }
+        name: true,
+        lastName: true,
+        docNumber: true,
+        email: true,
+        password: true,
+      },
     });
 
     return user as Users;

@@ -5,14 +5,14 @@ const prisma = new PrismaClient();
 @Injectable()
 export class RoleService {
   async addRole(dto : userRole) {
-    await prisma.userRole.create({
+    const rol = await prisma.userRole.create({
         data: {
           name: dto.name,
           description: dto.description,
           status: true,
         },
       });
-      return 'ok';
+      return rol;
   }
   async getRoles() {
     const roles = await prisma.userRole.findMany({
@@ -23,7 +23,14 @@ export class RoleService {
         id: true,
         name: true,
         description: true,
-        users: true,
+        users: {
+          select: {
+            name: true,
+            lastName: true,
+            email: true,
+            roleID: true,
+          }
+        },
       },
     });
     return roles;

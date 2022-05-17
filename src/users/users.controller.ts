@@ -1,10 +1,13 @@
-import {  Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Users } from '@prisma/client';
 import { IUsersService } from './i-user.service';
 @Controller('users')
 export class UsersController {
-  constructor(@Inject('IUsersService') private readonly _usersService: IUsersService) {}
+  constructor(
+    @Inject('IUsersService') private readonly _usersService: IUsersService,
+  ) {}
 
-  @Get()
+  @Get('getAll')
   async getAll() {
     return await this._usersService.getAll();
   }
@@ -13,7 +16,7 @@ export class UsersController {
     return this._usersService.addUser(dto);
   }
   @Post('filterUsers')
-  filterUsers(@Body() dto: any) {
+  filterUsers(@Body() dto: Users) {
     return this._usersService.filterUsers(dto);
   }
   @Post('editUser')
@@ -24,5 +27,4 @@ export class UsersController {
   disableUser(@Body() dto: any) {
     return this._usersService.disableUser(dto);
   }
-  
 }
