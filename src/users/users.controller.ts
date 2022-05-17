@@ -1,16 +1,16 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { usersService } from './users.service';
+import {  Controller, Get, Inject, Post, Query } from '@nestjs/common';
+import { IUsersService } from './i-user.service';
 @Controller('users')
-export class usersController {
-  constructor(private usersService: usersService) {}
+export class UsersController {
+  constructor(@Inject('IUsersService') private readonly _usersService: IUsersService) {}
 
-  @Get('get')
-  getall() {
-    return this.usersService.getall();
+  @Get()
+  async getAll() {
+    return await this._usersService.getAll();
   }
-  @Post('add')
+  @Post()
   getUser(@Query() dto: any) {
-    return this.usersService.addUser(dto);
+    return this._usersService.addUser(dto);
   }
   
 }

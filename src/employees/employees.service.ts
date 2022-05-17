@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Empleado, EmployeesEntry, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable({})
 export class employeesService {
-  async addEmployer(dto) {
+  async addEmployer(dto : Empleado) {
     const employee = await prisma.empleado.create({
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: dto.project,
-        provinciaId: dto.province,
+        proyectosIds: dto.proyectosIds,
+        provinciaId: dto.provinciaId,
       },
     });
     return employee;
@@ -24,7 +24,7 @@ export class employeesService {
     });
     return empleados;
   }
-  async getById(dto) {
+  async getById(dto : Empleado) {
     console.log(dto);
     const employee = await prisma.empleado.findFirst({
       where: {
@@ -34,30 +34,30 @@ export class employeesService {
     return employee;
   }
 
-  async updateEmployee(dto) {
+  async updateEmployee(dto : Empleado) {
     const employee = await prisma.empleado.update({
       where: {
         id: dto.id,
       },
       data: {
         name: dto.name,
-        proyectosIds: dto.proyectos,
-        provinciaId: dto.provincia,
+        proyectosIds: dto.proyectosIds,
+        provinciaId: dto.provinciaId,
       },
     });
     return employee;
   }
-  async employeEntry(dto) {
+  async employeEntry(dto : EmployeesEntry) {
     try {
       let employee = await prisma.empleado.findFirst({
         where: {
-          id: dto.employee,
+          id: dto.id,
         },
       });
       if (employee) {
         await prisma.employeesEntry.create({
           data: {
-            employeeID: dto.employee,
+            employeeID: dto.employeeID,
           },
         });
         return employee;
@@ -66,7 +66,7 @@ export class employeesService {
       return err;
     }
   }
-  async getEntries(dto) {
+  async getEntries(dto : EmployeesEntry) {
     let entries = await prisma.employeesEntry.findMany({
       include: {
         employee: {
