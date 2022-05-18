@@ -82,4 +82,24 @@ export class employeesService {
     });
     return entries;
   }
+  async filterEmployees(dto: string) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto) {
+      queryArgs.where = {
+        name: {
+          contains: dto.search,
+        },
+      };
+    }
+    const employees = prisma.empleado.findMany({
+      ...queryArgs,
+      include: {
+        provincia: true,
+        proyectos: true,
+      },
+    });
+    return employees;
+  }
 }
