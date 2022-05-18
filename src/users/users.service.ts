@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient, Users } from '@prisma/client';
 import { IUsersService } from './i-user.service';
+import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 @Injectable()
@@ -21,7 +22,9 @@ export class UsersService implements IUsersService {
     return user;
   }
 
-  async editUser(dto: Users) {
+  async editUser(dto: any) {
+    const salt = await bcrypt.genSalt(12);
+    const hashedPassword = await bcrypt.hash(dto.password, salt);
     const user = await prisma.users.update({
       where: {
         id: dto.id,
@@ -31,14 +34,26 @@ export class UsersService implements IUsersService {
         lastName: dto.lastName,
         email: dto.email,
         docNumber: dto.docNumber,
-        password: dto.password,
+        password: hashedPassword,
         userCreated: true,
         roleID: dto.roleID,
       },
+      select: {
+        name: true,
+        docNumber: true,
+        email: true,
+        lastName: true,
+        role: {
+          select: {
+            name: true,
+            id: true
+          },
+        },
+      },
     });
-    return user;
+    return user as any;
   }
-  async disableUser(dto: Users) {
+  async disableUser(dto: any) {
     const user = await prisma.users.update({
       where: {
         id: dto.id,
@@ -46,8 +61,20 @@ export class UsersService implements IUsersService {
       data: {
         status: false,
       },
+      select: {
+        name: true,
+        docNumber: true,
+        email: true,
+        lastName: true,
+        role: {
+          select: {
+            name: true,
+            id: true
+          },
+        },
+      },
     });
-    return user;
+    return user as any;
   }
 
   async getAll() {
@@ -81,6 +108,7 @@ export class UsersService implements IUsersService {
     const users = await prisma.users.findMany({
       ...queryArgs,
       select: {
+        id: true,
         name: true,
         docNumber: true,
         email: true,
@@ -88,6 +116,7 @@ export class UsersService implements IUsersService {
         role: {
           select: {
             name: true,
+            id: true
           },
         },
       },
