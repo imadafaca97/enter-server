@@ -41,6 +41,7 @@ export class employeesService {
       },
       data: {
         name: dto.name,
+        role: dto.role,
         proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
       },
