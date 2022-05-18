@@ -104,11 +104,16 @@ export class UsersService implements IUsersService {
         lastName: true,
         docNumber: true,
         email: true,
+        role: {
+          select: {
+            name: true,
+          },
+        },
         password: true,
       },
     });
 
-    return user as Users;
+    return user as any;
   }
 
   async getById(id: string) {
