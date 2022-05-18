@@ -20,7 +20,7 @@ export class UsersController {
     return this._usersService.filterUsers(dto);
   }
   @Post('editUser')
-  editUser(@Body() dto: any) {
+  editUser(@Body() dto: Users) {
     return this._usersService.editUser(dto);
   }
   @Post('disableUser')
