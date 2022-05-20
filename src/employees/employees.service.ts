@@ -11,6 +11,7 @@ export class employeesService {
         role: dto.role,
         proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
+        maestroId: dto.maestroId
       },
     });
     return employee;
