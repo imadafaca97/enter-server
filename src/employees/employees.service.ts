@@ -25,7 +25,6 @@ export class employeesService {
     return empleados;
   }
   async getById(dto: Empleado) {
-    console.log(dto);
     const employee = await prisma.empleado.findFirst({
       where: {
         id: dto.id,
