@@ -7,14 +7,18 @@ import { UsersModule } from './users/users.module';
 import { permitssModule } from './permissions/permits.module';
 import { AuthModule } from './auth/auth.module';
 import { roleModule } from './roles/role.module';
+import { AccidentsModule } from './accidents/accident.module';
 
 @Module({
-  imports: [provinciasModule, 
-            employeesModule, 
-            moduleProyecto,
-            UsersModule,
-            permitssModule,
-            AuthModule,
-            roleModule]
+  imports: [
+    provinciasModule,
+    employeesModule,
+    moduleProyecto,
+    UsersModule,
+    permitssModule,
+    AuthModule,
+    roleModule,
+    AccidentsModule,
+  ],
 })
 export class AppModule {}

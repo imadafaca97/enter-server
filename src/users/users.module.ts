@@ -2,14 +2,14 @@ import { Module, Provider } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
-const UsersServiceProvider : Provider = {
+const UsersServiceProvider: Provider = {
   provide: 'IUsersService',
-  useClass: UsersService
-}
+  useClass: UsersService,
+};
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService,UsersServiceProvider],
-  exports: [UsersService,UsersServiceProvider]
+  providers: [UsersService, UsersServiceProvider],
+  exports: [UsersService, UsersServiceProvider],
 })
 export class UsersModule {}
