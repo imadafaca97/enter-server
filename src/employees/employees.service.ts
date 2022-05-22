@@ -25,6 +25,12 @@ export class employeesService {
     });
     return empleados;
   }
+
+  async deleteAll(){
+     await prisma.empleado.deleteMany();
+     return 'Deleted All'
+  }
+
   async getById(dto: Empleado) {
     const employee = await prisma.empleado.findFirst({
       where: {
