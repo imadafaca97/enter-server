@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { employeesService } from './employees.service';
 
 @Controller('employees')
@@ -28,5 +28,10 @@ export class employeesController {
   @Post('filterEmployees')
   filterEmployees(@Body() dto: string) {
     return this.employeesService.filterEmployees(dto);
+  }
+
+  @Delete('deleteAll')
+  deleteAll(){
+    return this.employeesService.deleteAll();
   }
 }
