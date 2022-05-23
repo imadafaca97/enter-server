@@ -25,6 +25,12 @@ export class employeesService {
     });
     return empleados;
   }
+
+  async deleteAll(){
+     await prisma.empleado.deleteMany();
+     return 'Deleted All'
+  }
+
   async getById(dto: Empleado) {
     const employee = await prisma.empleado.findFirst({
       where: {
@@ -59,6 +65,7 @@ export class employeesService {
         await prisma.employeesEntry.create({
           data: {
             employeeID: dto.employeeID,
+            provinceID: dto.provinceID,
           },
         });
         return employee;
@@ -82,6 +89,15 @@ export class employeesService {
     });
     return entries;
   }
+  async getEntriesbyProvince(dto : EmployeesEntry){
+    const entries = await prisma.employeesEntry.findMany({
+      where:{
+        provinceID: dto.id
+      }
+    })
+    return entries
+  }
+
   async filterEmployees(dto: string) {
     let queryArgs = {
       where: {},

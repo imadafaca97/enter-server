@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { employeesService } from './employees.service';
 
 @Controller('employees')
@@ -17,6 +17,12 @@ export class employeesController {
   getgetEntriesById(@Query() dto: any) {
     return this.employeesService.getEntries(dto);
   }
+
+  @Get('getEntriesByProvince')
+  getgetEntriesByProvince(@Body() dto: any) {
+    return this.employeesService.getEntriesbyProvince(dto);
+  }
+  
   @Post('add')
   addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
@@ -28,5 +34,10 @@ export class employeesController {
   @Post('filterEmployees')
   filterEmployees(@Body() dto: string) {
     return this.employeesService.filterEmployees(dto);
+  }
+
+  @Delete('deleteAll')
+  deleteAll(){
+    return this.employeesService.deleteAll();
   }
 }
