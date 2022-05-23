@@ -5,4 +5,5 @@ export interface IEmployeeAccident {
   accidentList(dto: any): Promise<object[]>;
   editAccident(dto: EmployeeAccident): Promise<Partial<EmployeeAccident>>;
   disableAccident(dto: string): Promise<EmployeeAccident>;
+  // getfile(dto: any): Promise<string>;
 }

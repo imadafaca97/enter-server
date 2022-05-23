@@ -99,51 +99,8 @@ export class accidentsService implements IEmployeeAccident {
     });
     return accident;
   }
-
-  // async getAll() {
-  //   const user = await prisma.users.findMany();
-  //   return user;
-  // }
-
-  // async filterUsers(dto) {
-  //   let queryArgs = {
-  //     where: {},
-  //   };
-  //   if (dto.role) {
-  //     queryArgs = {
-  //       where: {
-  //         roleID: dto.role,
-  //       },
-  //     };
-  //   }
-  //   if (dto.search) {
-  //     queryArgs.where = {
-  //       name: {
-  //         contains: dto.search,
-  //       },
-  //       ...queryArgs.where,
-  //     };
-  //   }
-  //   queryArgs.where = {
-  //     status: true,
-  //     ...queryArgs.where,
-  //   };
-  //   const users = await prisma.users.findMany({
-  //     ...queryArgs,
-  //     select: {
-  //       id: true,
-  //       name: true,
-  //       docNumber: true,
-  //       email: true,
-  //       lastName: true,
-  //       role: {
-  //         select: {
-  //           name: true,
-  //           id: true,
-  //         },
-  //       },
-  //     },
-  //   });
-  //   return users;
+  // async getfile(dto: any): Promise<string> {
+  //   console.log(dto)
+  //   return "hola mundo"
   // }
 }
