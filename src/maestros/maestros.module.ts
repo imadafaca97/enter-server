@@ -1,9 +1,16 @@
-import { Module } from '@nestjs/common';
-import { maestrosController } from './maestros.controller';
-import { maestrosService } from './maestros.service';
+import { Module, Provider } from '@nestjs/common';
+import { MaestrosController } from './maestros.controller';
+import { MaestroService } from './maestros.service';
+
+const MaestrosServiceProvider: Provider = {
+  provide: 'IMaestroService',
+  useClass: MaestroService,
+};
 
 @Module({
-  controllers: [maestrosController],
-  providers: [maestrosService],
+  controllers: [MaestrosController],
+  providers: [MaestroService, MaestrosServiceProvider],
+  exports: [MaestroService, MaestrosServiceProvider],
 })
-export class maestrosModule {}
+export class MaestrosModule {}
+

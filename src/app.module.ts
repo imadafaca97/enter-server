@@ -8,8 +8,8 @@ import { permitssModule } from './permissions/permits.module';
 import { AuthModule } from './auth/auth.module';
 import { roleModule } from './roles/role.module';
 import { AccidentsModule } from './accidents/accident.module';
-import { maestrosModule } from './maestros/maestros.module';
-import { laborModule } from './labor/labor.module';
+import { laborModule } from './labores/labor.module';
+import { MaestrosModule } from './maestros/maestros.module';
 
 @Module({
   imports: [
@@ -21,8 +21,8 @@ import { laborModule } from './labor/labor.module';
     AuthModule,
     roleModule,
     AccidentsModule,
-    maestrosModule,
     laborModule,
+    MaestrosModule
   ],
 })
 export class AppModule {}
