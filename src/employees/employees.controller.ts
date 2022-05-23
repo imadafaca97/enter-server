@@ -17,6 +17,12 @@ export class employeesController {
   getgetEntriesById(@Query() dto: any) {
     return this.employeesService.getEntries(dto);
   }
+
+  @Get('getEntriesByProvince')
+  getgetEntriesByProvince(@Body() dto: any) {
+    return this.employeesService.getEntriesbyProvince(dto);
+  }
+  
   @Post('add')
   addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
