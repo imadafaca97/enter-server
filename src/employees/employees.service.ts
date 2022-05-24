@@ -65,7 +65,7 @@ export class employeesService {
         await prisma.employeesEntry.create({
           data: {
             employeeID: dto.employeeID,
-            provinceID: dto.provinceID,
+            provinciaID: dto.provinciaID,
           },
         });
         return employee;
@@ -89,10 +89,11 @@ export class employeesService {
     });
     return entries;
   }
-  async getEntriesbyProvince(dto : EmployeesEntry){
+  async getEntriesbyProvince(dto : any){
+    console.log(dto)
     const entries = await prisma.employeesEntry.findMany({
       where:{
-        provinceID: dto.id
+        provinciaID: dto.id
       }
     })
     return entries

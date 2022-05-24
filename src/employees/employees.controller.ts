@@ -18,8 +18,8 @@ export class employeesController {
     return this.employeesService.getEntries(dto);
   }
 
-  @Get('getEntriesByProvince')
-  getgetEntriesByProvince(@Body() dto: any) {
+  @Post('getEntriesByProvince')
+  getEntriesByProvince(@Body() dto: any) {
     return this.employeesService.getEntriesbyProvince(dto);
   }
   
