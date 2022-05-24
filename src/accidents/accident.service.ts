@@ -49,6 +49,13 @@ export class accidentsService implements IEmployeeAccident {
           select: {
             name: true,
             id: true,
+            role: true,
+            maestro: {
+              select: {
+                name: true,
+                id: true,
+              },
+            },
           },
         },
         province: {

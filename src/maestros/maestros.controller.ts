@@ -8,9 +8,9 @@ export class MaestrosController {
     private readonly _maestroService: IMaestroService,
   ) {}
 
-  @Get('getAll')
-  async getAll() {
-    return await this._maestroService.getAll();
+  @Get('getmaestros')
+  getMaestros() {
+    return this._maestroService.getMaestros();
   }
   @Post('add')
   addMaestro(@Body() dto: any) {
@@ -25,7 +25,7 @@ export class MaestrosController {
   //   return this._maestroService.getById(dto);
   // }
   @Post('editmaestro')
-  editMaestro(@Body() dto: Maestro) {
+  editMaestro(@Body() dto: any) {
     return this._maestroService.editMaestro(dto);
   }
   @Post('disablemaestro')

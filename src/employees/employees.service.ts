@@ -9,7 +9,7 @@ export class employeesService {
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: dto.proyectosIds,
+        proyectosIds: ['6272acb0c32a2199e3b4f683','6272b5f7b30d8f118348a8a7'],
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId
       },
@@ -21,6 +21,7 @@ export class employeesService {
       include: {
         provincia: true,
         proyectos: true,
+        maestro: true
       },
     });
     return empleados;
@@ -114,6 +115,7 @@ export class employeesService {
       include: {
         provincia: true,
         proyectos: true,
+        maestro: true
       },
     });
     return employees;

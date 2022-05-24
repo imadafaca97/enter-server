@@ -142,12 +142,12 @@ model Maestro {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  laborID String
-  proyectosIds String[] @db.ObjectId
-  empleados Empleado[]
   name String
   docNumber String
+  laborID String
+  proyectosIds String[] @db.ObjectId
   status Boolean @default(true)
+  empleados Empleado[]
 
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
   labor Labor @relation(fields: [laborID], references: [id])

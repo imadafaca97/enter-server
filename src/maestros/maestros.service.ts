@@ -45,11 +45,15 @@ export class MaestroService implements IMaestroService {
     return maestro as any;
   }
 
-  async getAll() {
-    const maestro = await prisma.maestro.findMany({
-      
+  async getMaestros() {
+    let maestro = await prisma.maestro.findMany({
+      where: {status: true},
+      include: {
+        labor: true,
+        proyectos: true
+      }
     });
-    return maestro;
+    return maestro as object[];
   }
 
   async filterMaestro(dto: any) {
