@@ -14,12 +14,10 @@ export class provinciasService {
   }
   async provinceInfo() {
     const provincia = await prisma.provincia.findMany({
-      select: {
-        name: true,
-        path: true,
+      include: {
         proyectos: true,
         empleados: true,
-        id: true
+        employeeEntry: true
       },
     });
     return provincia;

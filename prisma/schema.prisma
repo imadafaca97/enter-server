@@ -20,6 +20,8 @@ model Provincia {
   proyectos Proyecto[]
   empleados Empleado[]
   accidents EmployeeAccident[]
+  employeeEntry EmployeesEntry []
+
 }
 
 model Proyecto {
@@ -43,7 +45,7 @@ model Empleado {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  role String 
+  role String
   proyectosIds String[] @db.ObjectId
   provinciaId String 
   permits Permits[]
@@ -99,7 +101,10 @@ model EmployeesEntry {
   updatedAt DateTime @updatedAt
 
   employeeID String
+  provinciaID String
   employee Empleado @relation(fields: [employeeID], references: [id])
+  provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
 }
 
 model EmployeeAccident {
