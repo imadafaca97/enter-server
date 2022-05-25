@@ -20,6 +20,12 @@ export class MaestrosController {
   filterMaestro(@Body() dto: any) {
     return this._maestroService.filterMaestro(dto);
   }
+  
+  @Post('getByProject')
+  getByProject(@Body() dto: any){
+    return this._maestroService.getByProject(dto);
+  }
+
   @Post('editmaestro')
   editMaestro(@Body() dto: any) {
     return this._maestroService.editMaestro(dto);

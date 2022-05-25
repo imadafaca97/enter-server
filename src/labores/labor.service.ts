@@ -57,4 +57,18 @@ export class LaborService {
     });
     return disabled;
   }
+
+  async getById(id : string){
+    const labor = await prisma.labor.findFirst({
+      where:{
+        id:{
+          equals: id
+        }
+      },include: {
+        maestros: true
+      }
+    });
+    return labor
+  }
+
 }
