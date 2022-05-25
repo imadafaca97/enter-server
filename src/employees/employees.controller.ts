@@ -29,6 +29,7 @@ export class employeesController {
   }
   @Post('employeeEntry')
   employeEntry(@Body() dto: any) {
+    console.log(dto)
     return this.employeesService.employeEntry(dto);
   }
   @Post('filterEmployees')

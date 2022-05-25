@@ -15,4 +15,6 @@ export class laborController{
         return this.laborService.getall();
     }
 
+ 
+
 }

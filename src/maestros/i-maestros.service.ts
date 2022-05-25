@@ -7,4 +7,5 @@ export interface IMaestroService {
   filterMaestro(dto: any): Promise<object[]>;
   editMaestro(dto: any): Promise<object[]>;
   disableMaestro(dto: Maestro): Promise<object[]>;
+  getByProject (dto: Maestro): Promise<object[]>;
 }
