@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Maestro, PrismaClient } from '@prisma/client';
 import { IMaestroService } from './i-maestros.service';
 const prisma = new PrismaClient();
 
@@ -97,6 +97,18 @@ export class MaestroService implements IMaestroService {
     });
     return Maestro;
   }
+
+  async getByProject(dto: Maestro): Promise<object[]> {
+      const maestro = await prisma.maestro.findMany({
+          where:{
+            proyectosIds: {
+              has: dto.id
+            }
+          }
+      });
+      return maestro;
+  }
+
   // async getById(dto: any) {
   //   const maestro = await prisma.maestro.findFirst({
   //     where: {

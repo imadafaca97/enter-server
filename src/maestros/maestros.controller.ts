@@ -24,6 +24,12 @@ export class MaestrosController {
   // getById(@Body() dto: any) {
   //   return this._maestroService.getById(dto);
   // }
+
+  @Post('getByProject')
+  getByProject(@Body() dto: any){
+    return this._maestroService.getByProject(dto);
+  }
+
   @Post('editmaestro')
   editMaestro(@Body() dto: any) {
     return this._maestroService.editMaestro(dto);
