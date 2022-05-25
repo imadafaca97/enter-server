@@ -26,7 +26,15 @@ export class employeesController {
     return this.employeesService.employeEntry(dto);
   }
   @Post('filterEmployees')
-  filterEmployees(@Body() dto: string) {
+  filterEmployees(@Body() dto: any) {
     return this.employeesService.filterEmployees(dto);
+  }
+  @Post('deleteemployee')
+  deleteEmployee(@Body() dto: any) {
+    return this.employeesService.deleteEmployee(dto);
+  }
+  @Post('editemployee')
+  editEmployee(@Body() dto: any) {
+    return this.employeesService.editEmployee(dto);
   }
 }
