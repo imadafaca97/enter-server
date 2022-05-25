@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Empleado, EmployeesEntry, PrismaClient } from '@prisma/client';
+import { Empleado, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable({})
@@ -55,7 +55,7 @@ export class employeesService {
     });
     return employee;
   }
-  async employeEntry(dto: EmployeesEntry) {
+  async employeEntry(dto: any) {
     try {
       let employee = await prisma.empleado.findFirst({
         where: {
@@ -75,7 +75,7 @@ export class employeesService {
       return err;
     }
   }
-  async getEntries(dto: EmployeesEntry) {
+  async getEntries(dto: any) {
     let entries = await prisma.employeesEntry.findMany({
       include: {
         employee: {
@@ -100,7 +100,7 @@ export class employeesService {
     return entries
   }
 
-  async filterEmployees(dto: string) {
+  async filterEmployees(dto: any) {
     let queryArgs = {
       where: {},
     };

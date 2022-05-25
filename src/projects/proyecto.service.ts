@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 @Injectable()
 export class ProyectoService {
   async addProyect(dto : any) {
+    console.log(dto)
     const proyecto = await prisma.proyecto.create({
       data: {
         name: dto.name,
