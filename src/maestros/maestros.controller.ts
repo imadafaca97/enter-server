@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
-import { Maestro } from '@prisma/client';
+// import { Maestro } from '@prisma/client';
 import { IMaestroService } from './i-maestros.service';
 @Controller('maestros')
 export class MaestrosController {
@@ -17,14 +17,10 @@ export class MaestrosController {
     return this._maestroService.addMaestro(dto);
   }
   @Post('filterMaestros')
-  filterMaestro(@Body() dto: Maestro) {
+  filterMaestro(@Body() dto: any) {
     return this._maestroService.filterMaestro(dto);
   }
-  // @Post('getById')
-  // getById(@Body() dto: any) {
-  //   return this._maestroService.getById(dto);
-  // }
-
+  
   @Post('getByProject')
   getByProject(@Body() dto: any){
     return this._maestroService.getByProject(dto);
