@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient, Proyecto } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable()
 export class ProyectoService {
-  async addProyect(dto : Proyecto) {
+  async addProyect(dto : any) {
     const proyecto = await prisma.proyecto.create({
       data: {
         name: dto.name,
-        empleadosIds: dto.empleadosIds,
         provinciaId: dto.provinciaId,
+        address: dto.address,
+        description: dto.description 
       },
     });
     return proyecto;

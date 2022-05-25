@@ -60,7 +60,7 @@ export class MaestroService implements IMaestroService {
     let queryArgs = {
       where: {},
     };
-    if (dto.role) {
+    if (dto.laborID) {
       queryArgs = {
         where: {
           laborID: dto.laborID,
@@ -71,52 +71,23 @@ export class MaestroService implements IMaestroService {
       queryArgs.where = {
         name: {
           contains: dto.search,
+          mode: 'insensitive',
         },
         ...queryArgs.where,
       };
     }
     queryArgs.where = {
-      status: true,
       ...queryArgs.where,
+      status: true,
     };
     const Maestro = await prisma.maestro.findMany({
       ...queryArgs,
-      select: {
-        id: true,
-        name: true,
-        docNumber: true,
-        proyectosIds: true,
-        status: true,
-        labor: {
-          select: {
-            type: true,
-            id: true
-          },
-        },
-      },
+      include: {
+        labor: true,
+        proyectos: true
+      }
     });
     return Maestro;
   }
-  // async getById(dto: any) {
-  //   const maestro = await prisma.maestro.findFirst({
-  //     where: {
-  //       id: dto.id,
-  //     },
-  //     select: {
-  //       name: true,
-  //       docNumber: true,
-  //       proyectosIds: true,
-  //       status: true,
-  //       // labor: {
-  //       //   select: {
-  //       //     id: true,
-  //       //     type: true,
-  //       //   },
-  //       // },
-  //     },
-  //   });
-
-  //   return maestro;
-  // }
 }
 

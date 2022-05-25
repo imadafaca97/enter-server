@@ -97,6 +97,7 @@ export class UsersService implements IUsersService {
       queryArgs.where = {
         name: {
           contains: dto.search,
+          mode: 'insensitive',
         },
         ...queryArgs.where,
       };

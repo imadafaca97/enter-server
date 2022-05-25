@@ -29,9 +29,11 @@ model Proyecto {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  empleadosIds String[] @db.ObjectId
-  provinciaId String
+  provinciaId String 
+  address String
+  description String 
   accidents EmployeeAccident[]
+  empleadosIds String[] @db.ObjectId
   maestrosIds String [] @db.ObjectId
   
   provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
