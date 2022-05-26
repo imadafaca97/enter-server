@@ -9,9 +9,17 @@ export class ProyectoController {
   getall() {
     return this.ProyectoService.getProjects();
   }
+  @Post('filterprojects')
+  filterProjects(@Body() dto: any) {
+    return this.ProyectoService.filterProjects(dto);
+  }
   @Post('addProject')
   addProyect(@Body() dto: any) {
     return this.ProyectoService.addProyect(dto);
+  }
+  @Post('editproject')
+  editProject(@Body() dto: any) {
+    return this.ProyectoService.editProject(dto);
   }
 
   @Get('getByProvince')
