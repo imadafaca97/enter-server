@@ -23,7 +23,6 @@ export class LaborController {
 
   @Post('getById')
   getById(@Body()  dto: any){
-    console.log(dto.id)
     return this.laborService.getById(dto.id)
   }
 }

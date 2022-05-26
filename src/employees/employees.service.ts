@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Empleado, EmployeesEntry, PrismaClient } from '@prisma/client';
+import { Empleado, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable({})
@@ -9,9 +9,9 @@ export class employeesService {
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: ['6272acb0c32a2199e3b4f683','6272b5f7b30d8f118348a8a7'],
+        proyectosIds: ['628e77e410fc8f385028258b', '628e77fc10fc8f385028258c'],
         provinciaId: dto.provinciaId,
-        maestroId: dto.maestroId
+        maestroId: dto.maestroId,
       },
     });
     return employee;
@@ -21,15 +21,15 @@ export class employeesService {
       include: {
         provincia: true,
         proyectos: true,
-        maestro: true
+        maestro: true,
       },
     });
     return empleados;
   }
 
-  async deleteAll(){
-     await prisma.empleado.deleteMany();
-     return 'Deleted All'
+  async deleteAll() {
+    await prisma.empleado.deleteMany();
+    return 'Deleted All';
   }
 
   async getById(dto: Empleado) {
@@ -55,31 +55,30 @@ export class employeesService {
     });
     return employee;
   }
-  async employeEntry(dto: EmployeesEntry) {
+  async employeEntry(dto: any) {
     try {
       let employee = await prisma.empleado.findFirst({
         where: {
           id: {
-            equals: dto.id
-          }
+            equals: dto.id,
+          },
         },
       });
-      
+
       if (employee) {
-        
         await prisma.employeesEntry.create({
           data: {
             employeeID: dto.id,
-            provinciaID: dto.provinciaID,
+            provinciaID: employee.provinciaId,
           },
         });
         return employee;
       }
     } catch (err) {
-      return (err + "error");
+      return err + 'error';
     }
   }
-  async getEntries(dto: EmployeesEntry) {
+  async getEntries(dto: any) {
     let entries = await prisma.employeesEntry.findMany({
       include: {
         employee: {
@@ -94,17 +93,16 @@ export class employeesService {
     });
     return entries;
   }
-  async getEntriesbyProvince(dto : any){
-    console.log(dto)
+  async getEntriesbyProvince(dto: any) {
     const entries = await prisma.employeesEntry.findMany({
-      where:{
-        provinciaID: dto.id
-      }
-    })
-    return entries
+      where: {
+        provinciaID: dto.id,
+      },
+    });
+    return entries;
   }
 
-  async filterEmployees(dto: string) {
+  async filterEmployees(dto: any) {
     let queryArgs = {
       where: {},
     };
@@ -127,37 +125,38 @@ export class employeesService {
       };
     }
 
-    const employees = prisma.empleado.findMany({
+    const employees = await prisma.empleado.findMany({
       ...queryArgs,
       include: {
         provincia: true,
         proyectos: true,
-        maestro: true
+        maestro: true,
       },
     });
+
     return employees;
   }
-  async deleteEmployee(dto: any){
+  async deleteEmployee(dto: any) {
     const employee = await prisma.empleado.delete({
       where: {
-        id: dto.id
-      }
-    })
-    return employee
+        id: dto.id,
+      },
+    });
+    return employee;
   }
-  async editEmployee(dto: any){
+  async editEmployee(dto: any) {
     const employee = await prisma.empleado.update({
       where: {
-        id: dto.id
+        id: dto.id,
       },
-      data:{
+      data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: ['6272acb0c32a2199e3b4f683','6272b5f7b30d8f118348a8a7'],
+        proyectosIds: ['628e77fc10fc8f385028258c', '628e77fc10fc8f385028258c'],
         provinciaId: dto.provinciaId,
-        maestroId: dto.maestroId
+        maestroId: dto.maestroId,
       },
-    })
-    return employee
+    });
+    return employee;
   }
 }
