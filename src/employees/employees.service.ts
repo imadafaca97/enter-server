@@ -78,6 +78,29 @@ export class employeesService {
       return err + 'error';
     }
   }
+  async employeeExit(dto: any) {
+    try {
+      let employee = await prisma.empleado.findFirst({
+        where: {
+          id: {
+            equals: dto.id,
+          },
+        },
+      });
+
+      if (employee) {
+        await prisma.employeesEntry.create({
+          data: {
+            employeeID: dto.id,
+            provinciaID: employee.provinciaId,
+          },
+        });
+        return employee;
+      }
+    } catch (err) {
+      return err + 'error';
+    }
+  }
   async getEntries(dto: any) {
     let entries = await prisma.employeesEntry.findMany({
       include: {
