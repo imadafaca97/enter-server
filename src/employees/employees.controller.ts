@@ -29,8 +29,11 @@ export class employeesController {
   }
   @Post('employeeEntry')
   employeEntry(@Body() dto: any) {
-    console.log(dto)
     return this.employeesService.employeEntry(dto);
+  }
+  @Post('employeeExit')
+  employeeExit(@Body() dto: any) {
+    return this.employeesService.employeeExit(dto);
   }
   @Post('filterEmployees')
   filterEmployees(@Body() dto: any) {

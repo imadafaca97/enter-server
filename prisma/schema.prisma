@@ -21,6 +21,7 @@ model Provincia {
   empleados Empleado[]
   accidents EmployeeAccident[]
   employeeEntry EmployeesEntry []
+  employeeExit EmployeesExit []
 
 }
 
@@ -51,6 +52,7 @@ model Empleado {
   permits Permits[]
   accidents EmployeeAccident[]
   entryID  EmployeesEntry?
+  exit  EmployeesExit[]
   maestroId String
 
   @@fulltext([name])
@@ -96,6 +98,17 @@ model Permits {
 }
 
 model EmployeesEntry {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employeeID String
+  provinciaID String
+  employee Empleado @relation(fields: [employeeID], references: [id])
+  provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+}
+model EmployeesExit {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
