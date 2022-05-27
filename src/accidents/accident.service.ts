@@ -25,6 +25,16 @@ export class accidentsService implements IEmployeeAccident {
         },
       };
     }
+    // if (dto.search) {
+    //   queryArgs.where = {
+    //     employee: {
+    //       name: {
+    //         contains: dto.search,
+    //         mode: 'insensitive',
+    //       }
+    //     },
+    //   };
+    // }
     if (dto.project) {
       queryArgs.where = {
         projectID: dto.project,
@@ -76,6 +86,7 @@ export class accidentsService implements IEmployeeAccident {
         image: true,
       },
     });
+    console.log(accidents)
     return accidents;
   }
   async editAccident(dto: any) {

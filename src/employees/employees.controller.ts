@@ -17,7 +17,14 @@ export class employeesController {
   getgetEntriesById(@Query() dto: any) {
     return this.employeesService.getEntries(dto);
   }
-
+  @Post('filterEntries')
+  filterEntries(@Body() dto: any) {
+    return this.employeesService.filterEntries(dto);
+  }
+  @Post('filterExits')
+  filterExits(@Body() dto: any) {
+    return this.employeesService.filterExits(dto);
+  }
   @Post('getEntriesByProvince')
   getEntriesByProvince(@Body() dto: any) {
     return this.employeesService.getEntriesbyProvince(dto);

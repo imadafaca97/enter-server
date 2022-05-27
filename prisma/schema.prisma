@@ -51,8 +51,8 @@ model Empleado {
   provinciaId String 
   permits Permits[]
   accidents EmployeeAccident[]
-  entryID  EmployeesEntry?
-  exit  EmployeesExit[]
+  entryID  EmployeesEntry? @relation("EntrieEmployee")
+  exit  EmployeesExit[] @relation("ExitEmployee")
   maestroId String
 
   @@fulltext([name])
@@ -104,7 +104,7 @@ model EmployeesEntry {
 
   employeeID String
   provinciaID String
-  employee Empleado @relation(fields: [employeeID], references: [id])
+  employee Empleado @relation(fields: [employeeID], references: [id], "EntrieEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
 }
@@ -115,7 +115,7 @@ model EmployeesExit {
 
   employeeID String
   provinciaID String
-  employee Empleado @relation(fields: [employeeID], references: [id])
+  employee Empleado @relation(fields: [employeeID], references: [id], "ExitEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
 }
@@ -132,7 +132,7 @@ model EmployeeAccident {
   images Image[]
   image String?
   status Boolean
-
+  @@fulltext([employeeID])
   employee Empleado @relation(fields: [employeeID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   province Provincia @relation(fields: [provinceID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   project Proyecto @relation(fields: [projectID], references: [id], onUpdate: Cascade, onDelete: Cascade)

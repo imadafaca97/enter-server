@@ -89,7 +89,7 @@ export class employeesService {
       });
 
       if (employee) {
-        await prisma.employeesEntry.create({
+        await prisma.employeesExit.create({
           data: {
             employeeID: dto.id,
             provinciaID: employee.provinciaId,
@@ -115,6 +115,72 @@ export class employeesService {
       },
     });
     return entries;
+  }
+  async filterEntries(dto: any) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto.provinceID) {
+      queryArgs.where = {
+        provinciaID: dto.provinceID,
+      };
+    }
+    if (dto.search) {
+      queryArgs.where = {
+        employee: {
+          name: {
+            contains: dto.search,
+          },
+        },
+      };
+    }
+    let entries = await prisma.employeesEntry.findMany({
+      ...queryArgs,
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true,
+            role: true,
+          },
+        },
+      },
+    });
+    return entries;
+  }
+  async filterExits(dto: any) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto.provinceID) {
+      queryArgs.where = {
+        provinciaID: dto.provinceID,
+      };
+    }
+    if (dto.search) {
+      queryArgs.where = {
+        employee: {
+          name: {
+            contains: dto.search,
+          },
+        },
+      };
+    }
+    let exits = await prisma.employeesExit.findMany({
+      ...queryArgs,
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true,
+            role: true,
+          },
+        },
+      },
+    });
+    return exits;
   }
   async getEntriesbyProvince(dto: any) {
     const entries = await prisma.employeesEntry.findMany({
