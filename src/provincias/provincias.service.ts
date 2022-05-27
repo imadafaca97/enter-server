@@ -22,7 +22,6 @@ export class provinciasService {
           }
         },
         empleados: true,
-
         employeeEntry: true
       },
     });
