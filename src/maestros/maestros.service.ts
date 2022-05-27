@@ -50,7 +50,8 @@ export class MaestroService implements IMaestroService {
       where: {status: true},
       include: {
         labor: true,
-        proyectos: true
+        proyectos: true,
+        empleados: true
       }
     });
     return maestro as object[];

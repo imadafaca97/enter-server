@@ -104,6 +104,7 @@ model EmployeesEntry {
 
   employeeID String
   provinciaID String
+  maestroID String
   employee Empleado @relation(fields: [employeeID], references: [id], "EntrieEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
@@ -115,6 +116,7 @@ model EmployeesExit {
 
   employeeID String
   provinciaID String
+  maestroID String
   employee Empleado @relation(fields: [employeeID], references: [id], "ExitEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 

@@ -46,6 +46,10 @@ export class employeesController {
   filterEmployees(@Body() dto: any) {
     return this.employeesService.filterEmployees(dto);
   }
+  @Post('getEntriesByMaestro')
+  getEntriesByMaestro(@Body() dto:any){
+    return this.employeesService.getEntriesByMaestro(dto)
+  }
 
   @Post('deleteemployee')
   deleteEmployee(@Body() dto: any) {

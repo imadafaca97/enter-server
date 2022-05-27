@@ -64,12 +64,12 @@ export class employeesService {
           },
         },
       });
-
       if (employee) {
         await prisma.employeesEntry.create({
           data: {
             employeeID: dto.id,
             provinciaID: employee.provinciaId,
+            maestroID: employee.maestroId,
           },
         });
         return employee;
@@ -93,6 +93,7 @@ export class employeesService {
           data: {
             employeeID: dto.id,
             provinciaID: employee.provinciaId,
+            maestroID: employee.maestroId,
           },
         });
         return employee;
@@ -109,7 +110,7 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true,
+            role: true
           },
         },
       },
@@ -182,13 +183,26 @@ export class employeesService {
     });
     return exits;
   }
-  async getEntriesbyProvince(dto: any) {
+  async getEntriesbyProvince(dto : any){
     const entries = await prisma.employeesEntry.findMany({
       where: {
         provinciaID: dto.id,
       },
     });
     return entries;
+  }
+
+  async getEntriesByMaestro(dto:any){
+
+    const employee = await prisma.employeesEntry.findMany({
+      where:{
+        maestroID: dto.id
+      },select:{
+        createdAt: true, 
+        employee: true
+      }
+    })
+    return employee;
   }
 
   async filterEmployees(dto: any) {

@@ -30,7 +30,11 @@ export class ProyectoService {
     return proyecto;
   }
   async getProjects() {
-    const proyecto = await prisma.proyecto.findMany({});
+    const proyecto = await prisma.proyecto.findMany({
+      include:{
+        maestros: true,
+      }
+    });
     return proyecto;
   }
   async filterProjects(dto: any) {
