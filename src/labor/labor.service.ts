@@ -8,7 +8,7 @@ export class laborService {
     const labor = await prisma.labor.create({
       data: {
         type: dto.type,
-        Description: dto.Description
+        description: dto.description
       },
     });
     return labor;
