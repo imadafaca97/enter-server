@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ export class employeesService {
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: ['628e77e410fc8f385028258b', '628e77fc10fc8f385028258c'],
+        proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
       },
@@ -64,15 +64,37 @@ export class employeesService {
           },
         },
       });
-      if (employee) {
+      if (!employee) throw new ForbiddenException('no existe este empleado');
+      let entry = await prisma.employeesEntry.findFirst({
+        where: {
+          employeeID: employee.id,
+        },
+        orderBy: {
+          createdAt: "desc"
+        }
+      });
+      if (entry) {
+        const fecha = new Date(entry!.createdAt).toLocaleDateString();
+        const ahora = new Date().toLocaleDateString();
+        if (fecha == ahora) {
+          throw new ForbiddenException('Este usuario ya entro.');
+        } else {
+          await prisma.employeesEntry.create({
+            data: {
+              employeeID: entry.id,
+              provinciaID: entry.provinciaID,
+              maestroID: entry.maestroID,
+            },
+          });
+        }
+      } else {
         await prisma.employeesEntry.create({
           data: {
-            employeeID: dto.id,
+            employeeID: employee.id,
             provinciaID: employee.provinciaId,
             maestroID: employee.maestroId,
           },
         });
-        return employee;
       }
     } catch (err) {
       return err + 'error';
@@ -87,16 +109,38 @@ export class employeesService {
           },
         },
       });
+      if (!employee) throw new ForbiddenException('no existe este empleado');
 
-      if (employee) {
+      let exit = await prisma.employeesExit.findFirst({
+        where: {
+          employeeID: employee.id,
+        },
+        orderBy: {
+          createdAt: "desc"
+        }
+      });
+      if (exit) {
+        const fecha = new Date(exit!.createdAt).toLocaleDateString();
+        const ahora = new Date().toLocaleDateString();
+        if (fecha == ahora) {
+          throw new ForbiddenException('Este usuario ya salio.');
+        } else {
+          await prisma.employeesExit.create({
+            data: {
+              employeeID: exit.id,
+              provinciaID: exit.provinciaID,
+              maestroID: exit.maestroID,
+            },
+          });
+        }
+      } else {
         await prisma.employeesExit.create({
           data: {
-            employeeID: dto.id,
+            employeeID: employee.id,
             provinciaID: employee.provinciaId,
             maestroID: employee.maestroId,
           },
         });
-        return employee;
       }
     } catch (err) {
       return err + 'error';
@@ -110,7 +154,7 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true
+            role: true,
           },
         },
       },
@@ -183,7 +227,7 @@ export class employeesService {
     });
     return exits;
   }
-  async getEntriesbyProvince(dto : any){
+  async getEntriesbyProvince(dto: any) {
     const entries = await prisma.employeesEntry.findMany({
       where: {
         provinciaID: dto.id,
@@ -192,16 +236,16 @@ export class employeesService {
     return entries;
   }
 
-  async getEntriesByMaestro(dto:any){
-
+  async getEntriesByMaestro(dto: any) {
     const employee = await prisma.employeesEntry.findMany({
-      where:{
-        maestroID: dto.id
-      },select:{
-        createdAt: true, 
-        employee: true
-      }
-    })
+      where: {
+        maestroID: dto.id,
+      },
+      select: {
+        createdAt: true,
+        employee: true,
+      },
+    });
     return employee;
   }
 
