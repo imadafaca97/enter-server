@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Maestro, PrismaClient } from '@prisma/client';
 import { IMaestroService } from './i-maestros.service';
 const prisma = new PrismaClient();
 
@@ -50,7 +50,8 @@ export class MaestroService implements IMaestroService {
       where: {status: true},
       include: {
         labor: true,
-        proyectos: true
+        proyectos: true,
+        empleados: true
       }
     });
     return maestro as object[];
@@ -60,7 +61,7 @@ export class MaestroService implements IMaestroService {
     let queryArgs = {
       where: {},
     };
-    if (dto.role) {
+    if (dto.laborID) {
       queryArgs = {
         where: {
           laborID: dto.laborID,
@@ -71,52 +72,35 @@ export class MaestroService implements IMaestroService {
       queryArgs.where = {
         name: {
           contains: dto.search,
+          mode: 'insensitive',
         },
         ...queryArgs.where,
       };
     }
     queryArgs.where = {
-      status: true,
       ...queryArgs.where,
+      status: true,
     };
     const Maestro = await prisma.maestro.findMany({
       ...queryArgs,
-      select: {
-        id: true,
-        name: true,
-        docNumber: true,
-        proyectosIds: true,
-        status: true,
-        labor: {
-          select: {
-            type: true,
-            id: true
-          },
-        },
-      },
+      include: {
+        labor: true,
+        proyectos: true
+      }
     });
     return Maestro;
   }
-  // async getById(dto: any) {
-  //   const maestro = await prisma.maestro.findFirst({
-  //     where: {
-  //       id: dto.id,
-  //     },
-  //     select: {
-  //       name: true,
-  //       docNumber: true,
-  //       proyectosIds: true,
-  //       status: true,
-  //       // labor: {
-  //       //   select: {
-  //       //     id: true,
-  //       //     type: true,
-  //       //   },
-  //       // },
-  //     },
-  //   });
+  
+  async getByProject(dto: Maestro): Promise<object[]> {
+      const maestro = await prisma.maestro.findMany({
+          where:{
+            proyectosIds: {
+              has: dto.id
+            }
+          }
+      });
+      return maestro;
+  }
 
-  //   return maestro;
-  // }
 }
 

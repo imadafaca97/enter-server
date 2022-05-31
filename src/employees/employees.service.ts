@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Empleado, EmployeesEntry, PrismaClient } from '@prisma/client';
+import { Empleado, PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 @Injectable({})
@@ -9,9 +9,9 @@ export class employeesService {
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: ['6272acb0c32a2199e3b4f683','6272b5f7b30d8f118348a8a7'],
+        proyectosIds: ['628e77e410fc8f385028258b', '628e77fc10fc8f385028258c'],
         provinciaId: dto.provinciaId,
-        maestroId: dto.maestroId
+        maestroId: dto.maestroId,
       },
     });
     return employee;
@@ -21,15 +21,15 @@ export class employeesService {
       include: {
         provincia: true,
         proyectos: true,
-        maestro: true
+        maestro: true,
       },
     });
     return empleados;
   }
 
-  async deleteAll(){
-     await prisma.empleado.deleteMany();
-     return 'Deleted All'
+  async deleteAll() {
+    await prisma.empleado.deleteMany();
+    return 'Deleted All';
   }
 
   async getById(dto: Empleado) {
@@ -55,28 +55,88 @@ export class employeesService {
     });
     return employee;
   }
-  async employeEntry(dto: EmployeesEntry) {
+  async employeEntry(dto: any) {
     try {
       let employee = await prisma.empleado.findFirst({
         where: {
-          id: dto.id,
+          id: {
+            equals: dto.id,
+          },
         },
       });
       if (employee) {
         await prisma.employeesEntry.create({
           data: {
-            employeeID: dto.employeeID,
-            provinceID: dto.provinceID,
+            employeeID: dto.id,
+            provinciaID: employee.provinciaId,
+            maestroID: employee.maestroId,
           },
         });
         return employee;
       }
     } catch (err) {
-      return err;
+      return err + 'error';
     }
   }
-  async getEntries(dto: EmployeesEntry) {
+  async employeeExit(dto: any) {
+    try {
+      let employee = await prisma.empleado.findFirst({
+        where: {
+          id: {
+            equals: dto.id,
+          },
+        },
+      });
+
+      if (employee) {
+        await prisma.employeesExit.create({
+          data: {
+            employeeID: dto.id,
+            provinciaID: employee.provinciaId,
+            maestroID: employee.maestroId,
+          },
+        });
+        return employee;
+      }
+    } catch (err) {
+      return err + 'error';
+    }
+  }
+  async getEntries(dto: any) {
     let entries = await prisma.employeesEntry.findMany({
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true,
+            role: true
+          },
+        },
+      },
+    });
+    return entries;
+  }
+  async filterEntries(dto: any) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto.provinceID) {
+      queryArgs.where = {
+        provinciaID: dto.provinceID,
+      };
+    }
+    if (dto.search) {
+      queryArgs.where = {
+        employee: {
+          name: {
+            contains: dto.search,
+          },
+        },
+      };
+    }
+    let entries = await prisma.employeesEntry.findMany({
+      ...queryArgs,
       include: {
         employee: {
           select: {
@@ -90,34 +150,116 @@ export class employeesService {
     });
     return entries;
   }
-  async getEntriesbyProvince(dto : EmployeesEntry){
-    const entries = await prisma.employeesEntry.findMany({
-      where:{
-        provinceID: dto.id
-      }
-    })
-    return entries
-  }
-
-  async filterEmployees(dto: string) {
+  async filterExits(dto: any) {
     let queryArgs = {
       where: {},
     };
-    if (dto) {
+    if (dto.provinceID) {
       queryArgs.where = {
-        name: {
-          contains: dto.search,
+        provinciaID: dto.provinceID,
+      };
+    }
+    if (dto.search) {
+      queryArgs.where = {
+        employee: {
+          name: {
+            contains: dto.search,
+          },
         },
       };
     }
-    const employees = prisma.empleado.findMany({
+    let exits = await prisma.employeesExit.findMany({
+      ...queryArgs,
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true,
+            role: true,
+          },
+        },
+      },
+    });
+    return exits;
+  }
+  async getEntriesbyProvince(dto : any){
+    const entries = await prisma.employeesEntry.findMany({
+      where: {
+        provinciaID: dto.id,
+      },
+    });
+    return entries;
+  }
+
+  async getEntriesByMaestro(dto:any){
+
+    const employee = await prisma.employeesEntry.findMany({
+      where:{
+        maestroID: dto.id
+      },select:{
+        createdAt: true, 
+        employee: true
+      }
+    })
+    return employee;
+  }
+
+  async filterEmployees(dto: any) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto.search) {
+      queryArgs.where = {
+        name: {
+          contains: dto.search,
+          mode: 'insensitive',
+        },
+      };
+    }
+    if (dto.provinciaId) {
+      queryArgs.where = {
+        provinciaId: dto.provinciaId,
+      };
+    }
+    if (dto.maestroId) {
+      queryArgs.where = {
+        maestroId: dto.maestroId,
+      };
+    }
+
+    const employees = await prisma.empleado.findMany({
       ...queryArgs,
       include: {
         provincia: true,
         proyectos: true,
-        maestro: true
+        maestro: true,
       },
     });
+
     return employees;
+  }
+  async deleteEmployee(dto: any) {
+    const employee = await prisma.empleado.delete({
+      where: {
+        id: dto.id,
+      },
+    });
+    return employee;
+  }
+  async editEmployee(dto: any) {
+    const employee = await prisma.empleado.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        name: dto.name,
+        role: dto.role,
+        proyectosIds: ['628e77fc10fc8f385028258c', '628e77fc10fc8f385028258c'],
+        provinciaId: dto.provinciaId,
+        maestroId: dto.maestroId,
+      },
+    });
+    return employee;
   }
 }

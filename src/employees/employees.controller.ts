@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { employeesService } from './employees.service';
 
 @Controller('employees')
@@ -17,9 +17,16 @@ export class employeesController {
   getgetEntriesById(@Query() dto: any) {
     return this.employeesService.getEntries(dto);
   }
-
-  @Get('getEntriesByProvince')
-  getgetEntriesByProvince(@Body() dto: any) {
+  @Post('filterEntries')
+  filterEntries(@Body() dto: any) {
+    return this.employeesService.filterEntries(dto);
+  }
+  @Post('filterExits')
+  filterExits(@Body() dto: any) {
+    return this.employeesService.filterExits(dto);
+  }
+  @Post('getEntriesByProvince')
+  getEntriesByProvince(@Body() dto: any) {
     return this.employeesService.getEntriesbyProvince(dto);
   }
   
@@ -31,13 +38,26 @@ export class employeesController {
   employeEntry(@Body() dto: any) {
     return this.employeesService.employeEntry(dto);
   }
+  @Post('employeeExit')
+  employeeExit(@Body() dto: any) {
+    return this.employeesService.employeeExit(dto);
+  }
   @Post('filterEmployees')
-  filterEmployees(@Body() dto: string) {
+  filterEmployees(@Body() dto: any) {
     return this.employeesService.filterEmployees(dto);
   }
+  @Post('getEntriesByMaestro')
+  getEntriesByMaestro(@Body() dto:any){
+    return this.employeesService.getEntriesByMaestro(dto)
+  }
 
-  @Delete('deleteAll')
-  deleteAll(){
-    return this.employeesService.deleteAll();
+  @Post('deleteemployee')
+  deleteEmployee(@Body() dto: any) {
+    return this.employeesService.deleteEmployee(dto);
+  }
+  @Post('editemployee')
+  editEmployee(@Body() dto: any) {
+    return this.employeesService.editEmployee(dto);
+
   }
 }

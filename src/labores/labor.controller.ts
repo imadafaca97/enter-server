@@ -20,4 +20,9 @@ export class LaborController {
   disableLabor(@Body() dto: any) {
     return this.laborService.disableLabor(dto);
   }
+
+  @Post('getById')
+  getById(@Body()  dto: any){
+    return this.laborService.getById(dto.id)
+  }
 }

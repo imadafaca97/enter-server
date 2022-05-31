@@ -21,6 +21,8 @@ model Provincia {
   empleados Empleado[]
   accidents EmployeeAccident[]
   employeeEntry EmployeesEntry []
+  employeeExit EmployeesExit []
+
 }
 
 model Proyecto {
@@ -28,9 +30,11 @@ model Proyecto {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  empleadosIds String[] @db.ObjectId
-  provinciaId String
+  provinciaId String 
+  address String
+  description String 
   accidents EmployeeAccident[]
+  empleadosIds String[] @db.ObjectId
   maestrosIds String [] @db.ObjectId
   
   provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -42,12 +46,13 @@ model Empleado {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  role String 
+  role String
   proyectosIds String[] @db.ObjectId
   provinciaId String 
   permits Permits[]
   accidents EmployeeAccident[]
-  entryID  EmployeesEntry?
+  entryID  EmployeesEntry? @relation("EntrieEmployee")
+  exit  EmployeesExit[] @relation("ExitEmployee")
   maestroId String
 
   @@fulltext([name])
@@ -98,9 +103,22 @@ model EmployeesEntry {
   updatedAt DateTime @updatedAt
 
   employeeID String
-  provinceID String
-  employee Empleado @relation(fields: [employeeID], references: [id])
-  province Provincia @relation(fields: [provinceID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  provinciaID String
+  maestroID String
+  employee Empleado @relation(fields: [employeeID], references: [id], "EntrieEmployee")
+  provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+}
+model EmployeesExit {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employeeID String
+  provinciaID String
+  maestroID String
+  employee Empleado @relation(fields: [employeeID], references: [id], "ExitEmployee")
+  provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
 }
 
@@ -116,7 +134,7 @@ model EmployeeAccident {
   images Image[]
   image String?
   status Boolean
-
+  @@fulltext([employeeID])
   employee Empleado @relation(fields: [employeeID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   province Provincia @relation(fields: [provinceID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   project Proyecto @relation(fields: [projectID], references: [id], onUpdate: Cascade, onDelete: Cascade)

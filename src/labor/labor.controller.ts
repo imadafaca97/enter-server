@@ -10,9 +10,11 @@ export class laborController{
       return this.laborService.addLabor(dto);
     }
 
-    @Get()
+    @Get('get')
     getall() {
         return this.laborService.getall();
     }
+
+ 
 
 }
