@@ -11,10 +11,6 @@ export class UsersController {
   async getAll() {
     return await this._usersService.getAll();
   }
-  @Post('add')
-  getUser(@Body() dto: any) {
-    return this._usersService.addUser(dto);
-  }
   @Post('filterUsers')
   filterUsers(@Body() dto: Users) {
     return this._usersService.filterUsers(dto);
