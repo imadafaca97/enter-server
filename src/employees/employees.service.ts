@@ -81,9 +81,12 @@ export class employeesService {
         } else {
           await prisma.employeesEntry.create({
             data: {
+
               employeeID: entry.id,
               provinciaID: entry.provinciaID,
               maestroID: entry.maestroID,
+              proyectoID: employee.proyectosIds[0],
+              nombre: employee.name,
             },
           });
         }
@@ -132,6 +135,8 @@ export class employeesService {
               employeeID: exit.id,
               provinciaID: exit.provinciaID,
               maestroID: exit.maestroID,
+              proyectoID: employee.proyectosIds[0],
+              nombre: employee.name,
             },
           });
         }
