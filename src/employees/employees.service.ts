@@ -125,19 +125,22 @@ export class employeesService {
     let queryArgs = {
       where: {},
     };
-    if (dto.provinceID) {
+    if (dto.province) {
       queryArgs.where = {
-        provinciaID: dto.provinceID,
+        provinciaID: dto.province,
+        ...queryArgs.where,
       };
     }
     if (dto.project) {
       queryArgs.where = {
         proyectoID: dto.project,
+        ...queryArgs.where,
       };
     }
     if (dto.maestro) {
       queryArgs.where = {
         maestroID: dto.maestro,
+        ...queryArgs.where,
       };
     }
     if (dto.search) {
@@ -146,6 +149,7 @@ export class employeesService {
           contains: dto.search,
           mode: 'insensitive',
         },
+        ...queryArgs.where,
       };
     }
     let entries = await prisma.employeesEntry.findMany({
@@ -167,18 +171,31 @@ export class employeesService {
     let queryArgs = {
       where: {},
     };
-    if (dto.provinceID) {
+    if (dto.province) {
       queryArgs.where = {
-        provinciaID: dto.provinceID,
+        provinciaID: dto.province,
+        ...queryArgs.where,
+      };
+    }
+    if (dto.project) {
+      queryArgs.where = {
+        proyectoID: dto.project,
+        ...queryArgs.where,
+      };
+    }
+    if (dto.maestro) {
+      queryArgs.where = {
+        maestroID: dto.maestro,
+        ...queryArgs.where,
       };
     }
     if (dto.search) {
       queryArgs.where = {
-        employee: {
-          name: {
-            contains: dto.search,
-          },
+        nombre: {
+          contains: dto.search,
+          mode: 'insensitive',
         },
+        ...queryArgs.where,
       };
     }
     let exits = await prisma.employeesExit.findMany({
