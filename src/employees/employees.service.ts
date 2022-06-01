@@ -9,7 +9,7 @@ export class employeesService {
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: ['628e77e410fc8f385028258b', '628e77fc10fc8f385028258c'],
+        proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
       },
@@ -70,6 +70,8 @@ export class employeesService {
             employeeID: dto.id,
             provinciaID: employee.provinciaId,
             maestroID: employee.maestroId,
+            proyectoID: employee.proyectosIds[0],
+            nombre: employee.name,
           },
         });
         return employee;
@@ -94,6 +96,8 @@ export class employeesService {
             employeeID: dto.id,
             provinciaID: employee.provinciaId,
             maestroID: employee.maestroId,
+            proyectoID: employee.proyectosIds[0],
+            nombre: employee.name,
           },
         });
         return employee;
@@ -110,7 +114,7 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true
+            role: true,
           },
         },
       },
@@ -126,12 +130,21 @@ export class employeesService {
         provinciaID: dto.provinceID,
       };
     }
+    if (dto.project) {
+      queryArgs.where = {
+        proyectoID: dto.project,
+      };
+    }
+    if (dto.maestro) {
+      queryArgs.where = {
+        maestroID: dto.maestro,
+      };
+    }
     if (dto.search) {
       queryArgs.where = {
-        employee: {
-          name: {
-            contains: dto.search,
-          },
+        nombre: {
+          contains: dto.search,
+          mode: 'insensitive',
         },
       };
     }
@@ -183,7 +196,7 @@ export class employeesService {
     });
     return exits;
   }
-  async getEntriesbyProvince(dto : any){
+  async getEntriesbyProvince(dto: any) {
     const entries = await prisma.employeesEntry.findMany({
       where: {
         provinciaID: dto.id,
@@ -192,16 +205,16 @@ export class employeesService {
     return entries;
   }
 
-  async getEntriesByMaestro(dto:any){
-
+  async getEntriesByMaestro(dto: any) {
     const employee = await prisma.employeesEntry.findMany({
-      where:{
-        maestroID: dto.id
-      },select:{
-        createdAt: true, 
-        employee: true
-      }
-    })
+      where: {
+        maestroID: dto.id,
+      },
+      select: {
+        createdAt: true,
+        employee: true,
+      },
+    });
     return employee;
   }
 

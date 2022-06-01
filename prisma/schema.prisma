@@ -102,8 +102,10 @@ model EmployeesEntry {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  nombre String
   employeeID String
   provinciaID String
+  proyectoID String
   maestroID String
   employee Empleado @relation(fields: [employeeID], references: [id], "EntrieEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
@@ -114,6 +116,8 @@ model EmployeesExit {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  nombre String
+  proyectoID String
   employeeID String
   provinciaID String
   maestroID String
