@@ -81,11 +81,10 @@ export class employeesService {
         } else {
           await prisma.employeesEntry.create({
             data: {
-
               employeeID: entry.id,
               provinciaID: entry.provinciaID,
               maestroID: entry.maestroID,
-              proyectoID: employee.proyectosIds[0],
+              proyectoID: dto.proyectoID,
               nombre: employee.name,
             },
           });
@@ -96,7 +95,7 @@ export class employeesService {
             employeeID: employee.id,
             provinciaID: employee.provinciaId,
             maestroID: employee.maestroId,
-            proyectoID: employee.proyectosIds[0],
+            proyectoID: dto.proyectoID,
             nombre: employee.name,
           },
         });
@@ -135,7 +134,7 @@ export class employeesService {
               employeeID: exit.id,
               provinciaID: exit.provinciaID,
               maestroID: exit.maestroID,
-              proyectoID: employee.proyectosIds[0],
+              proyectoID: dto.proyectoID,
               nombre: employee.name,
             },
           });
@@ -146,7 +145,7 @@ export class employeesService {
             employeeID: employee.id,
             provinciaID: employee.provinciaId,
             maestroID: employee.maestroId,
-            proyectoID: employee.proyectosIds[0],
+            proyectoID: dto.proyectoID,
             nombre: employee.name,
           },
         });
@@ -212,6 +211,7 @@ export class employeesService {
             role: true,
           },
         },
+        proyecto: true,
       },
     });
     return entries;
@@ -258,6 +258,7 @@ export class employeesService {
             role: true,
           },
         },
+        proyecto: true,
       },
     });
     return exits;
@@ -334,7 +335,7 @@ export class employeesService {
       data: {
         name: dto.name,
         role: dto.role,
-        proyectosIds: ['628e77fc10fc8f385028258c', '628e77fc10fc8f385028258c'],
+        proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
       },

@@ -34,6 +34,9 @@ model Proyecto {
   address String
   description String 
   accidents EmployeeAccident[]
+  users Users[]
+  entradas EmployeesEntry[]
+  salidas EmployeesExit[]
   empleadosIds String[] @db.ObjectId
   maestrosIds String [] @db.ObjectId
   
@@ -71,10 +74,12 @@ model Users {
   status Boolean @default(true)
   email String @unique
   password String
+  proyectoID String
   userCreated Boolean @default(true)
   roleID String
   @@fulltext([name])
   role userRole @relation(fields: [roleID], references: [id])
+  proyecto Proyecto @relation(fields: [proyectoID], references: [id])
 }
 
 model userRole {
@@ -109,6 +114,7 @@ model EmployeesEntry {
   maestroID String
   employee Empleado @relation(fields: [employeeID], references: [id], "EntrieEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  proyecto Proyecto @relation(fields: [proyectoID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
 }
 model EmployeesExit {
@@ -123,6 +129,7 @@ model EmployeesExit {
   maestroID String
   employee Empleado @relation(fields: [employeeID], references: [id], "ExitEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  proyecto Proyecto @relation(fields: [proyectoID], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
 }
 
