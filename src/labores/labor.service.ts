@@ -62,7 +62,9 @@ export class LaborService {
     const labor = await prisma.labor.findFirst({
       where:{
         id:{
-          equals: id
+          equals: id,
+        },status:{
+          equals: true
         }
       },include: {
         maestros: true

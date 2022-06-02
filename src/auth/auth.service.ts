@@ -25,11 +25,11 @@ export class AuthService implements IAuthService {
     userDto.password = await this.hashPassword(userDto.password);
 
     const user = await this._usersService.addUser(userDto as any);
-
+    
     const userCopy = {
       ...user,
     };
-
+    console.log(userDto)
     delete (userCopy as unknown as any)?.password;
 
     const authResult: IAuthResult = {
@@ -50,11 +50,12 @@ export class AuthService implements IAuthService {
       ...user,
     };
     delete userCopy.password;
-
+    
     const authResult: IAuthResult = {
       user: userCopy as Users,
       token: this.getToken(userCopy as Users),
     };
+    console.log(authResult)
     return authResult;
   }
 
