@@ -17,7 +17,7 @@ export class UsersService implements IUsersService {
         password: dto.password,
         userCreated: true,
         roleID: dto.roleID,
-        proyectoID: dto.proyectoID,
+        proyectoID: dto.proyectoID? dto.proyectoID : null,
       },
     });
     return user;

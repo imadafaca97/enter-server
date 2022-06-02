@@ -74,12 +74,12 @@ model Users {
   status Boolean @default(true)
   email String @unique
   password String
-  proyectoID String
+  proyectoID String?
   userCreated Boolean @default(true)
   roleID String
   @@fulltext([name])
   role userRole @relation(fields: [roleID], references: [id])
-  proyecto Proyecto @relation(fields: [proyectoID], references: [id])
+  proyecto Proyecto? @relation(fields: [proyectoID], references: [id])
 }
 
 model userRole {
