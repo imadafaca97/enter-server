@@ -148,6 +148,7 @@ export class UsersService implements IUsersService {
           },
         },
         password: true,
+        proyectoID: true
       },
     });
 

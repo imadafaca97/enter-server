@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { LaborService } from './labor.service';
 
-@Controller('labor')
+@Controller('labores')
 export class LaborController {
   constructor(private laborService: LaborService) {}
   @Post('addlabor')

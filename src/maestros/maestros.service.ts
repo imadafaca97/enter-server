@@ -97,6 +97,8 @@ export class MaestroService implements IMaestroService {
             proyectosIds: {
               has: dto.id
             }
+          },include:{
+            empleados: true
           }
       });
       return maestro;
