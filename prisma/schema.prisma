@@ -130,7 +130,6 @@ model EmployeesExit {
   employee Empleado @relation(fields: [employeeID], references: [id], "ExitEmployee")
   provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyecto Proyecto @relation(fields: [proyectoID], references: [id], onUpdate: Cascade, onDelete: Cascade)
-
 }
 
 model EmployeeAccident {
