@@ -384,4 +384,15 @@ export class employeesService {
     });
     return employee;
   }
+
+  async getAbsentEmployee() {
+    const empleados = await prisma.empleado.findMany({
+      include: {
+        provincia: true,
+        proyectos: true,
+        maestro: true,
+      },
+    });
+    return empleados;
+  }
 }
