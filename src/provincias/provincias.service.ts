@@ -38,14 +38,17 @@ export class provinciasService {
     });
     return province as any;
   }
-  async filterProvince(dto: any){
-    let query = {
-      where: {}
-    };
-    if (dto.search) {
-      query.where = {name: {contains: dto.search, mode: 'insensitive'}}
-    }
-    const province = await prisma.provincia.findMany({...query});
-    return province;
+  async getallFiltered(dto : any) {
+    const provincias = await prisma.provincia.findMany({
+      where:{
+        name:  {
+          contains: dto.search
+        }
+      },
+      include: {
+        proyectos: true,
+      },
+    });
+    return provincias;
   }
 }

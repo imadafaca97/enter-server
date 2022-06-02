@@ -6,7 +6,7 @@ export class provinciasController {
   constructor(private provinciasService: provinciasService) {}
 
   @Get('get')
-  getall() {
+  getall(){
     return this.provinciasService.getall();
   }
   @Get('provinceInfo')
@@ -17,10 +17,9 @@ export class provinciasController {
   updateProvince(@Body() dto: Provincia){
     return this.provinciasService.editProvince(dto);
   }
-
-  @Post('filterProvinces')
-  filterProvinces(@Body() dto: any){
-    return this.provinciasService.filterProvince(dto);
+  @Post('getAllFiltered')
+  getallFiltered(@Body() dto: any){
+    return this.provinciasService.getallFiltered(dto);
   }
   
 }
