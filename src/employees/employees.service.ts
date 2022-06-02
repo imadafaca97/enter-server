@@ -62,8 +62,10 @@ export class employeesService {
           id: {
             equals: dto.id,
           },
-        },
-      });
+        },include:{
+          maestro: true
+        }
+      });console.log(employee)
       if (!employee) throw new ForbiddenException('no existe este empleado');
       let entry = await prisma.employeesEntry.findFirst({
         where: {
@@ -71,7 +73,7 @@ export class employeesService {
         },
         orderBy: {
           createdAt: "desc"
-        }
+        },
       });
       if (entry) {
         const fecha = new Date(entry!.createdAt).toLocaleDateString();
@@ -86,6 +88,7 @@ export class employeesService {
               maestroID: entry.maestroID,
               proyectoID: dto.proyectoID,
               nombre: employee.name,
+              laborID: employee.maestro.laborID,
             },
           });
         }
@@ -97,6 +100,7 @@ export class employeesService {
             maestroID: employee.maestroId,
             proyectoID: dto.proyectoID,
             nombre: employee.name,
+            laborID: employee.maestro.laborID,
           },
         });
       }
