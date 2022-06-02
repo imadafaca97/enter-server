@@ -170,6 +170,16 @@ export class employeesService {
     });
     return entries;
   }
+
+  async getEntriesByProject (dto : any){
+    let entries = await prisma.employeesEntry.findMany({
+      where:{
+        proyectoID: dto.id
+      }
+    })
+    return entries
+  }
+
   async filterEntries(dto: any) {
     let queryArgs = {
       where: {},

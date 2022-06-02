@@ -60,4 +60,9 @@ export class employeesController {
     return this.employeesService.editEmployee(dto);
 
   }
+
+  @Post('EntriesByProject')
+  getEntriesByProject(@Body() dto: any){
+    return this.employeesService.getEntriesByProject(dto);
+  }
 }
