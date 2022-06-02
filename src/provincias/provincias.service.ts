@@ -27,4 +27,25 @@ export class provinciasService {
     });
     return provincia;
   }
+  async editProvince(dto: any) {
+    const province = await prisma.provincia.update({
+      where: {
+        id: dto.provinceId,
+      },
+      data: {
+        name: dto.province
+      },
+    });
+    return province as any;
+  }
+  async filterProvince(dto: any){
+    let query = {
+      where: {}
+    };
+    if (dto.search) {
+      query.where = {name: {contains: dto.search, mode: 'insensitive'}}
+    }
+    const province = await prisma.provincia.findMany({...query});
+    return province;
+  }
 }
