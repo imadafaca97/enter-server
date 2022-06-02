@@ -41,9 +41,9 @@ export class accidentsService implements IEmployeeAccident {
         ...queryArgs.where,
       };
     }
-    if (dto.status) {
+    if (dto.adminReviewed) {
       queryArgs.where = {
-        adminReviewed: dto.status,
+        adminReviewed: dto.adminReviewed,
         ...queryArgs.where,
       };
     }
@@ -86,7 +86,6 @@ export class accidentsService implements IEmployeeAccident {
         image: true,
       },
     });
-    console.log(accidents)
     return accidents;
   }
   async editAccident(dto: any) {
