@@ -17,6 +17,7 @@ export class UsersService implements IUsersService {
         password: dto.password,
         userCreated: true,
         roleID: dto.roleID,
+        proyectoID: dto.proyectoID,
       },
     });
     return user;
@@ -37,6 +38,7 @@ export class UsersService implements IUsersService {
         password: hashedPassword,
         userCreated: true,
         roleID: dto.roleID,
+        proyectoID: dto.proyectoID,
       },
       select: {
         name: true,
@@ -46,7 +48,7 @@ export class UsersService implements IUsersService {
         role: {
           select: {
             name: true,
-            id: true
+            id: true,
           },
         },
       },
@@ -69,7 +71,7 @@ export class UsersService implements IUsersService {
         role: {
           select: {
             name: true,
-            id: true
+            id: true,
           },
         },
       },
@@ -117,7 +119,13 @@ export class UsersService implements IUsersService {
         role: {
           select: {
             name: true,
-            id: true
+            id: true,
+          },
+        },
+        proyecto: {
+          select: {
+            name: true,
+            id: true,
           },
         },
       },
