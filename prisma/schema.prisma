@@ -99,7 +99,7 @@ model Permits {
   idEmployee String
   description String
 
-  Permits Empleado @relation(fields: [idEmployee], references: [id])
+  Employee Empleado @relation(fields: [idEmployee], references: [id])
 }
 
 model EmployeesEntry {

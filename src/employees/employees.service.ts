@@ -382,4 +382,26 @@ export class employeesService {
     });
     return employee;
   }
+
+  async getAbsentEmployee(dto: any) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto.province) {
+      queryArgs.where = {
+        provinciaId: dto.province,
+      };
+    }
+
+    const employee = await prisma.empleado.findMany({
+      ...queryArgs,
+      include: {
+        provincia: true,
+        proyectos: true,
+        maestro: true,
+      },
+    });
+
+    return employee;
+  }
 }

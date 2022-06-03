@@ -1,12 +1,12 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import { Controller, Post, Query, Body } from '@nestjs/common';
 import { permitsService } from './permits.service';
 @Controller('permits')
 export class permitsController {
   constructor(private permitsService: permitsService) {}
 
-  @Get('get')
-  getall() {
-    return this.permitsService.getall();
+  @Post('get') 
+  getall(@Body() dto: any) {
+    return this.permitsService.getall(dto); 
   }
   @Post('add')
   getUser(@Query() dto: any) {
