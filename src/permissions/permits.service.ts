@@ -14,8 +14,22 @@ export class permitsService {
     });
     return user;
   }
-  async getall() {
-    const user = await prisma.permits.findMany({});
+  async getall(dto: any) {
+    let queryArgs = {
+      where: {},
+    };
+    if (dto.employee) {
+      queryArgs.where = {
+        idEmployee: dto.employee,
+      };
+    }
+
+    const user = await prisma.permits.findMany({
+      ...queryArgs,
+      include: {
+        Employee: true
+      }
+    });
     return user;
   }
 

@@ -66,9 +66,9 @@ export class employeesController {
     return this.employeesService.getEntriesByProject(dto);
   }
 
-  @Get('getAbsenceEmployees')
-  getAbsenceEmployees() {
-    return this.employeesService.getAbsentEmployee();
+  @Post('getAbsenceEmployees')
+  getAbsenceEmployees(@Body() dto: any) {
+    return this.employeesService.getAbsentEmployee(dto);
   }
   @Post('EntriesByLabor')
   getEntriesByLabor(@Body() dto: any){
