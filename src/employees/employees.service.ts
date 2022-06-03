@@ -287,7 +287,6 @@ export class employeesService {
   }
 
   async getEntriesByMaestro(dto: any) {
-    console.log(dto.projectID)
     const employee = await prisma.employeesEntry.findMany({
       where: {
         maestroID: dto.id,
@@ -304,7 +303,6 @@ export class employeesService {
   }
 
   async getEntriesByLabor(dto: any){
-    console.log(dto.projectID)
     const employee = await prisma.employeesEntry.findMany({
       where: {
         laborID: dto.id,

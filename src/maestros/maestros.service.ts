@@ -77,6 +77,13 @@ export class MaestroService implements IMaestroService {
         ...queryArgs.where,
       };
     }
+    if (dto.proyectoID) {
+      queryArgs.where = {
+        proyectosIds: {
+          has: dto.proyectoID
+        }
+      };
+    }
     queryArgs.where = {
       ...queryArgs.where,
       status: true,
