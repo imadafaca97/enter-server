@@ -1,4 +1,4 @@
-import { Controller, Post, Query, Body } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { permitsService } from './permits.service';
 @Controller('permits')
 export class permitsController {
@@ -9,7 +9,7 @@ export class permitsController {
     return this.permitsService.getall(dto); 
   }
   @Post('add')
-  getUser(@Query() dto: any) {
+  getUser(@Body() dto: any) {
     return this.permitsService.addPermit(dto);
   }
   
