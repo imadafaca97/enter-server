@@ -17,6 +17,10 @@ export class employeesController {
   getgetEntriesById(@Query() dto: any) {
     return this.employeesService.getEntries(dto);
   }
+  @Get('getTemporalEntries')
+  getTemporalEntries(@Query() dto: any) {
+    return this.employeesService.getTemporalEntries(dto);
+  }
   @Post('filterEntries')
   filterEntries(@Body() dto: any) {
     return this.employeesService.filterEntries(dto);
@@ -74,5 +78,6 @@ export class employeesController {
   getEntriesByLabor(@Body() dto: any){
     return this.employeesService.getEntriesByLabor(dto);
   }
+
 
 }
