@@ -246,12 +246,9 @@ export class employeesService {
     });
     return entries;
   }
-
-
-
-
+  
   async getEntriesByProject (dto : any){
-    let entries = await prisma.employeesEntry.findMany({
+    let entries = await prisma.temporalEntry.findMany({
       where:{
         proyectoID: dto.id
       }
@@ -379,7 +376,7 @@ export class employeesService {
   }
 
   async getEntriesByLabor(dto: any){
-    const employee = await prisma.employeesEntry.findMany({
+    const employee = await prisma.temporalEntry.findMany({
       where: {
         laborID: dto.id,
         AND:{
