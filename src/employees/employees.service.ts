@@ -55,6 +55,44 @@ export class employeesService {
     });
     return employee;
   }
+
+  async isMaster(id: any) {
+    let maestro = await prisma.maestro.findFirst({
+      where: {
+        id: {
+          equals: id,
+        },
+      },
+      include: {
+        labor: true,
+      },
+    });
+    return {
+      name: maestro?.name,
+      labor: maestro?.labor.type,
+    };
+  }
+  async isEmployee(id: any) {
+    let employee = await prisma.empleado.findFirst({
+      where: {
+        id: {
+          equals: id,
+        },
+      },
+      include:{
+        maestro: {
+          include: {
+            labor: true
+          }
+        }
+      }
+    });
+    return {
+      name: employee?.name,
+      labor: employee?.maestro.labor,
+    }
+  }
+
   async employeEntry(dto: any) {
     try {
       let employee = await prisma.empleado.findFirst({
@@ -70,7 +108,7 @@ export class employeesService {
       let entry = await prisma.employeesEntry.findFirst({
         where: {
           employeeID: employee.id,
-        },
+          },
         orderBy: {
           createdAt: "desc"
         },
@@ -91,9 +129,29 @@ export class employeesService {
               laborID: employee.maestro.laborID,
             },
           });
+          await prisma.temporalEntry.create({
+            data:{
+              employeeID: entry.id,
+              provinciaID: entry.provinciaID,
+              maestroID: entry.maestroID,
+              proyectoID: dto.proyectoID,
+              nombre: employee.name,
+              laborID: employee.maestro.laborID,
+            },
+          })
         }
       } else {
         await prisma.employeesEntry.create({
+          data: {
+            employeeID: employee.id,
+            provinciaID: employee.provinciaId,
+            maestroID: employee.maestroId,
+            proyectoID: dto.proyectoID,
+            nombre: employee.name,
+            laborID: employee.maestro.laborID,
+          },
+        });
+        await prisma.temporalEntry.create({
           data: {
             employeeID: employee.id,
             provinciaID: employee.provinciaId,
@@ -173,9 +231,27 @@ export class employeesService {
     });
     return entries;
   }
+  async getTemporalEntries(dto: any) {
+    let entries = await prisma.temporalEntry.findMany({
+      include: {
+        employee: {
+          select: {
+            proyectos: true,
+            provincia: true,
+            name: true,
+            role: true,
+          },
+        },
+      },
+    });
+    return entries;
+  }
+
+
+
 
   async getEntriesByProject (dto : any){
-    let entries = await prisma.employeesEntry.findMany({
+    let entries = await prisma.temporalEntry.findMany({
       where:{
         proyectoID: dto.id
       }
@@ -278,7 +354,7 @@ export class employeesService {
     return exits;
   }
   async getEntriesbyProvince(dto: any) {
-    const entries = await prisma.employeesEntry.findMany({
+    const entries = await prisma.temporalEntry.findMany({
       where: {
         provinciaID: dto.id,
       },
@@ -287,7 +363,7 @@ export class employeesService {
   }
 
   async getEntriesByMaestro(dto: any) {
-    const employee = await prisma.employeesEntry.findMany({
+    const employee = await prisma.temporalEntry.findMany({
       where: {
         maestroID: dto.id,
         AND:{
@@ -303,7 +379,7 @@ export class employeesService {
   }
 
   async getEntriesByLabor(dto: any){
-    const employee = await prisma.employeesEntry.findMany({
+    const employee = await prisma.temporalEntry.findMany({
       where: {
         laborID: dto.id,
         AND:{

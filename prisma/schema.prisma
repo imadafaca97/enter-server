@@ -22,6 +22,7 @@ model Provincia {
   accidents EmployeeAccident[]
   employeeEntry EmployeesEntry []
   employeeExit EmployeesExit []
+  employeeEntries TemporalEntry[]
 
 }
 
@@ -36,6 +37,7 @@ model Proyecto {
   accidents EmployeeAccident[]
   users Users[]
   entradas EmployeesEntry[]
+  entradas2 TemporalEntry[]
   salidas EmployeesExit[]
   empleadosIds String[] @db.ObjectId
   maestrosIds String [] @db.ObjectId
@@ -55,6 +57,7 @@ model Empleado {
   permits Permits[]
   accidents EmployeeAccident[]
   entryID  EmployeesEntry? @relation("EntrieEmployee")
+  entry2ID TemporalEntry? @relation("EntrieEmployee2")
   exit  EmployeesExit[] @relation("ExitEmployee")
   maestroId String
 
@@ -100,6 +103,23 @@ model Permits {
   description String
 
   Employee Empleado @relation(fields: [idEmployee], references: [id])
+}
+
+model TemporalEntry{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  nombre String
+  employeeID String
+  provinciaID String
+  proyectoID String
+  maestroID String
+  laborID String
+  employee Empleado @relation(fields: [employeeID], references: [id], "EntrieEmployee2")
+  provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  proyecto Proyecto @relation(fields: [proyectoID], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
 }
 
 model EmployeesEntry {
