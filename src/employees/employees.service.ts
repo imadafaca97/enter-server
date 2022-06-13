@@ -457,8 +457,8 @@ export class employeesService {
       include: {
         provincia: true,
         proyectos: true,
-        maestro: true,
         labor: true,
+        maestro: true,
       },
     });
 
