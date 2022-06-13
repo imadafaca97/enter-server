@@ -38,10 +38,10 @@ export class employeesController {
   addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
   }
-  @Post('employeeEntry')
-  employeEntry(@Body() dto: any) {
-    return this.employeesService.employeEntry(dto);
-  }
+  // @Post('employeeEntry')
+  // employeEntry(@Body() dto: any) {
+  //   return this.employeesService.employeEntry(dto);
+  // }
   @Post('employeeExit')
   employeeExit(@Body() dto: any) {
     return this.employeesService.employeeExit(dto);
@@ -78,6 +78,13 @@ export class employeesController {
   getEntriesByLabor(@Body() dto: any){
     return this.employeesService.getEntriesByLabor(dto);
   }
-
+  @Post('changeRating')
+  changeRating(@Body() dto: any){
+    return this.employeesService.changeRating(dto);
+  }
+  @Get('hola')
+  change(@Body() dto: any){
+    return this.employeesService.changeLabor();
+  }
 
 }

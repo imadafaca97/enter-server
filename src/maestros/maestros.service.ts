@@ -12,6 +12,7 @@ export class MaestroService implements IMaestroService {
         docNumber: dto.docNumber,
         laborID: dto.laborID,
         proyectosIds: dto.proyectosIds,
+        provinciaID: dto. provinciaID,
         status: true,
       },
     });
@@ -28,6 +29,7 @@ export class MaestroService implements IMaestroService {
         docNumber: dto.docNumber,
         laborID: dto.laborID,
         proyectosIds: dto.proyectosIds,
+        provinciaID: dto. provinciaID,
         status: true,
       }
     });
@@ -51,7 +53,8 @@ export class MaestroService implements IMaestroService {
       include: {
         labor: true,
         proyectos: true,
-        empleados: true
+        empleados: true,
+        provincia: true,
       }
     });
     return maestro as object[];
@@ -92,7 +95,8 @@ export class MaestroService implements IMaestroService {
       ...queryArgs,
       include: {
         labor: true,
-        proyectos: true
+        proyectos: true,
+        provincia: true,
       }
     });
     return Maestro;
@@ -105,7 +109,7 @@ export class MaestroService implements IMaestroService {
               has: dto.id
             }
           },include:{
-            empleados: true
+            empleados: true,
           }
       });
       return maestro;

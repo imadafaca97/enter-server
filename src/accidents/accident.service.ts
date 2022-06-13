@@ -59,7 +59,7 @@ export class accidentsService implements IEmployeeAccident {
           select: {
             name: true,
             id: true,
-            role: true,
+            labor: true,
             maestro: {
               select: {
                 name: true,
