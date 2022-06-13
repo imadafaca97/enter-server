@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
+import { ok } from 'assert';
 const prisma = new PrismaClient();
 
 @Injectable({})
@@ -8,7 +9,8 @@ export class employeesService {
     const employee = await prisma.empleado.create({
       data: {
         name: dto.name,
-        role: dto.role,
+        calificacion: dto.calificacion,
+        laborID: dto.laborID,
         proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
@@ -22,6 +24,7 @@ export class employeesService {
         provincia: true,
         proyectos: true,
         maestro: true,
+        labor: true,
       },
     });
     return empleados;
@@ -48,7 +51,7 @@ export class employeesService {
       },
       data: {
         name: dto.name,
-        role: dto.role,
+        laborID: dto.laborID,
         proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
       },
@@ -79,18 +82,18 @@ export class employeesService {
           equals: id,
         },
       },
-      include:{
+      include: {
         maestro: {
           include: {
-            labor: true
-          }
-        }
-      }
+            labor: true,
+          },
+        },
+      },
     });
     return {
       name: employee?.name,
       labor: employee?.maestro.labor,
-    }
+    };
   }
 
   async employeEntry(dto: any) {
@@ -100,17 +103,18 @@ export class employeesService {
           id: {
             equals: dto.id,
           },
-        },include:{
-          maestro: true
-        }
+        },
+        include: {
+          maestro: true,
+        },
       });
       if (!employee) throw new ForbiddenException('no existe este empleado');
       let entry = await prisma.temporalEntry.findFirst({
         where: {
           employeeID: employee.id,
-          },
+        },
         orderBy: {
-          createdAt: "desc"
+          createdAt: 'desc',
         },
       });
       if (entry) {
@@ -130,7 +134,7 @@ export class employeesService {
             },
           });
           await prisma.temporalEntry.create({
-            data:{
+            data: {
               employeeID: entry.id,
               provinciaID: entry.provinciaID,
               maestroID: entry.maestroID,
@@ -138,7 +142,7 @@ export class employeesService {
               nombre: employee.name,
               laborID: employee.maestro.laborID,
             },
-          })
+          });
         }
       } else {
         await prisma.employeesEntry.create({
@@ -182,8 +186,8 @@ export class employeesService {
           employeeID: employee.id,
         },
         orderBy: {
-          createdAt: "desc"
-        }
+          createdAt: 'desc',
+        },
       });
       if (exit) {
         const fecha = new Date(exit!.createdAt).toLocaleDateString();
@@ -224,7 +228,7 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true,
+            labor: true,
           },
         },
       },
@@ -239,14 +243,13 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true,
+            labor: true,
           },
         },
       },
     });
     return entries;
   }
-  
   async getEntriesByProject (dto : any){
     let entries = await prisma.temporalEntry.findMany({
       where:{
@@ -274,9 +277,9 @@ export class employeesService {
         ...queryArgs.where,
       };
     }
-    if (dto.maestro) {
+    if (dto.laborID) {
       queryArgs.where = {
-        maestroID: dto.maestro,
+        laborID: dto.laborID,
         ...queryArgs.where,
       };
     }
@@ -297,7 +300,12 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true,
+            labor: true,
+            maestro: {
+              select: {
+                labor: true
+              }
+            }
           },
         },
         proyecto: true,
@@ -344,7 +352,7 @@ export class employeesService {
             proyectos: true,
             provincia: true,
             name: true,
-            role: true,
+            labor: true,
           },
         },
         proyecto: true,
@@ -365,9 +373,9 @@ export class employeesService {
     const employee = await prisma.temporalEntry.findMany({
       where: {
         maestroID: dto.id,
-        AND:{
-          proyectoID: dto.projectID
-        }
+        AND: {
+          proyectoID: dto.projectID,
+        },
       },
       select: {
         createdAt: true,
@@ -377,20 +385,20 @@ export class employeesService {
     return employee;
   }
 
-  async getEntriesByLabor(dto: any){
+  async getEntriesByLabor(dto: any) {
     const employee = await prisma.temporalEntry.findMany({
       where: {
         laborID: dto.id,
-        AND:{
-          proyectoID: dto.projectID
-        }
+        AND: {
+          proyectoID: dto.projectID,
+        },
       },
       select: {
         createdAt: true,
         employee: true,
       },
     });
-    return employee
+    return employee;
   }
 
   // async getEntriesByLabor(dto: any){
@@ -439,8 +447,8 @@ export class employeesService {
     if (dto.proyectoID) {
       queryArgs.where = {
         proyectosIds: {
-          has: dto.proyectoID
-        }
+          has: dto.proyectoID,
+        },
       };
     }
 
@@ -450,6 +458,7 @@ export class employeesService {
         provincia: true,
         proyectos: true,
         maestro: true,
+        labor: true,
       },
     });
 
@@ -470,7 +479,8 @@ export class employeesService {
       },
       data: {
         name: dto.name,
-        role: dto.role,
+        laborID: dto.laborID,
+        calificacion: dto.calificacion,
         proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
@@ -499,5 +509,145 @@ export class employeesService {
     });
 
     return employee;
+  }
+  async changeLabor() {
+
+    // await prisma.empleado.updateMany({
+    //   data: {
+    //     calificacion: 1
+    //   }
+    // })
+    // const empleados = await prisma.employeesEntry.deleteMany({
+    //   where: {
+    //     createdAt: {
+    //       gt: new Date('2022-06-06T19:04:06.570+00:00')
+    //     },
+    //     provinciaID: "6299071d7d0cd9afc7e030e2"
+    //   }
+    // })
+    // console.log(empleados)
+    // const empleados = await prisma.temporalEntry.deleteMany({
+      
+    // })
+    // console.log(empleados)
+    // await prisma.employeesEntry.deleteMany({
+    //   where: {
+
+    //   }
+    // })
+    // const empleados = await prisma.empleado.findMany({
+    //   where: {
+    //     proyectosIds: {
+    //       has: '629907827d0cd9afc7e030e4',
+    //     },
+    //   },
+    // });
+    // console.log(empleados);
+    // empleados.map(async (i) => {
+    //   this.employeEntry({
+    //     id: i.id.toString(),
+    //     proyectoID: '629907827d0cd9afc7e030e4',
+    //   });
+    // });
+    // const names = ["Remo", "Remy", "Ren", "Renars", "Reng", "Rennie", "Reno", "Reo", "Reuben", "Rexford", "Reynold"]
+    // console.log(names)
+    //  const empleados = await prisma.empleado.findMany({
+    //    where: {
+    //      provinciaId: "6299071d7d0cd9afc7e030e2"
+    //    },
+    //    include: {
+    //      proyectos: {
+    //        select: {
+    //          id: true,
+    //          name: true
+    //        }
+    //      },
+    //      maestro: true
+    //    }
+    //  })
+    //  await prisma.proyecto.findFirst({
+    //   where: {
+    //     provinciaId: "62729e48dc2e23c45cc715ac"
+    //   }
+    // }).then(async(res)=>{
+    //   await prisma.maestro.updateMany({
+    //     where: {
+    //       proyectosIds: {
+    //         has: "629904577d0cd9afc7e030d8"
+    //       }
+    //     },
+    //     data: {
+    //       provinciaID: "62729e41dc2e23c45cc71592"
+    //     }
+    //   })
+    // })
+    
+    //  empleados.map(async (i)=>{
+    //    await prisma.employeesEntry.create({
+    //      data: {
+    //       createdAt: new Date('2022-06-01T10:25:40.239+00:00'),
+    //       nombre: i.name,
+    //       employeeID: i.id,
+    //       provinciaID: i.provinciaId,
+    //       proyectoID: i.proyectosIds[0],
+    //       maestroID: i.maestroId,
+    //       laborID: i.maestro.laborID
+    //      }
+    //    })
+    //  })
+    // const labores = await prisma.labor.findMany({
+    //   select: {
+    //     type: true,
+    //     id: true,
+    //   }
+    // })
+
+    // labores.map(async (i) =>{
+    //   await prisma.empleado.updateMany({
+    //     where: {
+    //       role: i.type
+    //     },
+    //     data: {
+    //       laborID: i.id
+    //     }
+    //   })
+    // })
+    
+    // // // console.log(maestros, proyectos, labores)
+
+    // names.forEach(async (i)=>{
+    //   await prisma.empleado.create({
+    //     data:{
+    //       name: i,
+    //       role: labores[Math.floor(Math.random() * 11)].type,
+    //       proyectosIds: ['629907827d0cd9afc7e030e4'],
+    //       provinciaId: '62729e47dc2e23c45cc715a8',
+    //       maestroId: '629e7605e2fceff599e9b93b',
+    //     }
+    //   })
+    // })
+    // const employee = await prisma.empleado.findMany({
+    //   where: {
+    //     laborID: null
+    //   }
+    // })
+    // return employee
+    // await prisma.empleado.updateMany({
+    //   where: {
+    //     role: 
+    //   }
+    // })
+  }
+  
+  async changeRating(dto: any) {
+    await prisma.empleado.update({
+      where: {
+        id: dto.id
+      },
+      data: {
+        calificacion: parseInt(dto.rating)
+      }
+    })
+    return ok
   }
 }
