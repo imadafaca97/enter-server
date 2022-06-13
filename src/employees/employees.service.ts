@@ -249,7 +249,7 @@ export class employeesService {
       },
     });
     return entries;
- 
+  }
   async getEntriesByProject (dto : any){
     let entries = await prisma.temporalEntry.findMany({
       where: {
@@ -615,7 +615,7 @@ export class employeesService {
     //   }
     // })
   }
-
+  
   async changeRating(dto: any) {
     await prisma.empleado.update({
       where: {
