@@ -109,7 +109,7 @@ export class employeesService {
         },
       });
       if (!employee) throw new ForbiddenException('no existe este empleado');
-      let entry = await prisma.employeesEntry.findFirst({
+      let entry = await prisma.temporalEntry.findFirst({
         where: {
           employeeID: employee.id,
         },
@@ -249,9 +249,8 @@ export class employeesService {
       },
     });
     return entries;
-  }
-
-  async getEntriesByProject(dto: any) {
+ 
+  async getEntriesByProject (dto : any){
     let entries = await prisma.temporalEntry.findMany({
       where: {
         proyectoID: dto.id,
