@@ -19,6 +19,7 @@ model Provincia {
   path String
   proyectos Proyecto[]
   empleados Empleado[]
+  maestros Maestro[]
   accidents EmployeeAccident[]
   employeeEntry EmployeesEntry []
   employeeExit EmployeesExit []
@@ -51,10 +52,11 @@ model Empleado {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String
-  role String
   proyectosIds String[] @db.ObjectId
   provinciaId String 
   permits Permits[]
+  calificacion Int?
+  laborID String
   accidents EmployeeAccident[]
   entryID  EmployeesEntry? @relation("EntrieEmployee")
   entry2ID TemporalEntry? @relation("EntrieEmployee2")
@@ -62,6 +64,7 @@ model Empleado {
   maestroId String
 
   @@fulltext([name])
+  labor Labor @relation(fields: [laborID], references: [id])
   maestro Maestro @relation(fields: [maestroId], references: [id])
   provincia Provincia @relation(fields: [provinciaId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
@@ -184,6 +187,7 @@ model Labor {
   type String 
   description String
   maestros Maestro[]
+  empleados Empleado[]
   status Boolean @default(true)
 }
 
@@ -194,10 +198,12 @@ model Maestro {
   name String
   docNumber String
   laborID String
+  provinciaID String
   proyectosIds String[] @db.ObjectId
   status Boolean @default(true)
   empleados Empleado[]
 
+  provincia Provincia @relation(fields: [provinciaID], references: [id], onUpdate: Cascade, onDelete: Cascade)
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
   labor Labor @relation(fields: [laborID], references: [id])
 }

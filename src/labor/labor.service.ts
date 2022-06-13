@@ -17,7 +17,8 @@ export class laborService {
   async getall() {
     const labor = await prisma.labor.findMany({
       include: {
-       maestros: true
+       maestros: true,
+       empleados: true,
       },
     });
     return labor;

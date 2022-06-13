@@ -23,6 +23,7 @@ export class LaborService {
         id: true,
         type: true,
         description: true,
+        empleados: true,
         maestros: {
           select: {
             name: true,
