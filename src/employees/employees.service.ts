@@ -252,11 +252,13 @@ export class employeesService {
   }
   async getEntriesByProject (dto : any){
     let entries = await prisma.temporalEntry.findMany({
-      where: {
-        proyectoID: dto.id,
-      },
-    });
-    return entries;
+      where:{
+        proyectoID:{
+          in: dto.idArray
+        }
+      }
+    })
+    return entries
   }
 
   async filterEntries(dto: any) {
@@ -398,6 +400,27 @@ export class employeesService {
     });
     return employee;
   }
+
+  // async getEntriesByLabor(dto: any){
+  //   const entries = await prisma.temporalEntry.findMany({
+  //     where:{
+  //       laborID:{
+  //         in: dto.idArray
+  //       },AND:{
+  //         proyectoID: dto.projectID
+  //       }
+  //     },
+  //     select:{
+  //       createdAt: true,
+  //       employee: true,
+  //       laborID: true
+  //     }
+  //   })
+  //   //const laborIdArray = entries.map((entrie)=> entrie.laborID)
+  //   let uniqueLaborIds = Array.from(new Set(entries.map((entry)=> entry.laborID)))
+  //   console.log('uniqueLaborIds', uniqueLaborIds)
+  //   return entries
+  // }
 
   async filterEmployees(dto: any) {
     let queryArgs = {
