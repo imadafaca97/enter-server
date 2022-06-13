@@ -38,10 +38,10 @@ export class employeesController {
   addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
   }
-  // @Post('employeeEntry')
-  // employeEntry(@Body() dto: any) {
-  //   return this.employeesService.employeEntry(dto);
-  // }
+  @Post('employeeEntry')
+  employeEntry(@Body() dto: any) {
+    return this.employeesService.employeEntry(dto);
+  }
   @Post('employeeExit')
   employeeExit(@Body() dto: any) {
     return this.employeesService.employeeExit(dto);
