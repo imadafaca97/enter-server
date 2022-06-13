@@ -73,4 +73,21 @@ export class LaborService {
     return labor
   }
 
+  async getAllLabors(array : string){
+    const labors = await prisma.labor.findMany({
+      where:{
+        id:{
+          in: array
+        },status:{
+          equals: true
+        }
+      },include:{
+        maestros: true
+      }
+    })
+    return labors
+  }
+
+
+
 }

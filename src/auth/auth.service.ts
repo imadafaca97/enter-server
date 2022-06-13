@@ -60,7 +60,6 @@ export class AuthService implements IAuthService {
   }
 
   signOut(res: Response<any, Record<string, any>>): void {
-    console.log('Singed Out');
     res.clearCookie('token');
   }
 

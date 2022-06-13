@@ -61,7 +61,7 @@ export class employeesController {
   }
   @Post('editemployee')
   editEmployee(@Body() dto: any) {
-    return this.employeesService.editEmployee(dto);
+    return this.employeesService.editEmployee(dto); 
 
   }
 

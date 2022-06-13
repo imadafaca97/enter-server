@@ -25,4 +25,8 @@ export class LaborController {
   getById(@Body()  dto: any){
     return this.laborService.getById(dto.id)
   }
+  @Post('getAllLabors')
+  getAllLabors(@Body()  dto: any){
+    return this.laborService.getAllLabors(dto.idArray)
+  }
 }
