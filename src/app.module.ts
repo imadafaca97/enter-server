@@ -11,6 +11,7 @@ import { AccidentsModule } from './accidents/accident.module';
 import { laborModule } from './labores/labor.module';
 import { MaestrosModule } from './maestros/maestros.module';
 import { AppService } from './app.service';
+import { VisitModule } from './visits/visits.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AppService } from './app.service';
     AccidentsModule,
     laborModule,
     MaestrosModule,
+    VisitModule,
     ScheduleModule.forRoot()
   ],
   providers:[

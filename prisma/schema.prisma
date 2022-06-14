@@ -40,6 +40,7 @@ model Proyecto {
   entradas EmployeesEntry[]
   entradas2 TemporalEntry[]
   salidas EmployeesExit[]
+  visitas Visit[]
   empleadosIds String[] @db.ObjectId
   maestrosIds String [] @db.ObjectId
   
@@ -207,6 +208,21 @@ model Maestro {
   proyectos Proyecto[] @relation(fields: [proyectosIds], references: [id])
   labor Labor @relation(fields: [laborID], references: [id])
 }
+model Visit {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  projectID String
+  docNumber String
+  name String
+  company String
+  position String
+  start DateTime
+  final DateTime
+  status Boolean
+
+  proyecto Proyecto @relation(fields: [projectID], references: [id])
+}
 
 
