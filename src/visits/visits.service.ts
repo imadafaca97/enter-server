@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { ForbiddenException, Injectable } from '@nestjs/common';
+import { PrismaClient, Visit } from '@prisma/client';
 import { ok } from 'assert';
 
 const prisma = new PrismaClient();
@@ -32,11 +32,12 @@ export class VisitService {
     });
     return visits;
   }
-  async addVisit(dto: any) {
+  async addVisit(dto: Visit) {
+   
     await prisma.visit.create({
-      data: {
-        ...dto,
-      },
+      data:{
+        ...dto
+      }
     });
     return ok;
   }
@@ -47,6 +48,44 @@ export class VisitService {
       },
     });
   }
+  async deleteAll(){
+    await prisma.visit.deleteMany({})
+    return ok
+  }
+async visitEntry(dto : any){
+  const visitante = await prisma.visit.findFirst({
+    where:{
+      id: dto.id
+    }
+  })
+  
+  const today = new Date()
+  if(visitante) {
+    if(visitante.final.toLocaleString() < today.toLocaleString()){
+      await prisma.visit.update({
+        where:{
+          id: dto.id
+        },data:{
+          status: "Caducado"
+        },
+      })
+      return(new ForbiddenException("La visita ya está vencida"))
+      
+    }else{
+      await prisma.visit.update({
+        where:{
+          id: dto.id
+        },data:{
+          status: "Activo"
+        }
+      })
+    }
+  }
+  
+
+  return visitante;
+}
+
   async editVisit(dto: any){
     await prisma.visit.update({
       where:{
@@ -57,10 +96,10 @@ export class VisitService {
         docNumber: dto.docNumber,
         name: dto.name,
         company: dto.company,
+        email: dto.email,
         position: dto.position,
         start: dto.start,
         final: dto.final,
-        status: true,
       },
     })
   }
