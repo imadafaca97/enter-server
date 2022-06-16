@@ -217,10 +217,11 @@ model Visit {
   docNumber String
   name String
   company String
+  email String
   position String
   start DateTime
   final DateTime
-  status Boolean
+  status String @default("Pendiente")
 
   proyecto Proyecto @relation(fields: [projectID], references: [id])
 }

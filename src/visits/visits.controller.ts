@@ -21,4 +21,12 @@ export class VisitsController {
   deleteVisit(@Body() dto: any) {
     return this.VisitService.delteVisit(dto);
   }
+  @Post('deleteAll')
+  deleteAll() {
+    return this.VisitService.deleteAll();
+  }
+  @Post('visitEntry')
+  visitEntry(@Body() dto :any) {
+    return this.VisitService.visitEntry(dto);
+  }
 }
