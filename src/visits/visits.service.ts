@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaClient, Visit } from '@prisma/client';
 import { ok } from 'assert';
 
@@ -53,15 +53,37 @@ export class VisitService {
     return ok
   }
 async visitEntry(dto : any){
-  const visitante = await prisma.visit.findFirst({
-    where:{
-      id: dto.id
-    }
-  })
+  let visitante;
   
+  try{
+    visitante = await prisma.visit.findFirst({
+      where:{
+        id: dto.id
+      }
+    })    
+  }catch(Error){
+    return ({message:"Esta Visita no existe"})
+  }
+
   const today = new Date()
   if(visitante) {
-    if(visitante.final.toLocaleString() < today.toLocaleString()){
+
+    if(visitante.status == "Activo"){
+      await prisma.visit.update({
+        where:{
+          id: visitante.id
+        },data:{
+          status: "Salida"
+        },
+      })
+      return ({message: "Salida registrada Correctamente"})
+    }
+
+    if(visitante.status == "Salida"){
+      return ({message: "La visita ya fue realizada"})
+    }
+
+    if( visitante.status == "Caducado" || visitante.final.toLocaleString() < today.toLocaleString()){
       await prisma.visit.update({
         where:{
           id: dto.id
@@ -69,7 +91,7 @@ async visitEntry(dto : any){
           status: "Caducado"
         },
       })
-      return(new ForbiddenException("La visita ya está vencida"))
+      return({message: "Esta visita esta caducada"})
       
     }else{
       await prisma.visit.update({
@@ -80,9 +102,9 @@ async visitEntry(dto : any){
         }
       })
     }
+  }else{
+    return ({message: "Esta visita no esta registrada"})
   }
-  
-
   return visitante;
 }
 
