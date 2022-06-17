@@ -626,6 +626,14 @@ export class employeesService {
     //     }
     //   })
     // })
+    let hola = await prisma.empleado.findMany({
+      where: {
+        proyectosIds: {
+          hasEvery: ["629905327d0cd9afc7e030dd", "6299055d7d0cd9afc7e030de"]
+        }
+      }
+    })
+    return hola
     // const employee = await prisma.empleado.findMany({
     //   where: {
     //     laborID: null

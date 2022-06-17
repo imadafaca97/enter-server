@@ -66,9 +66,7 @@ export class ProyectoService {
   async getProjectsByProvince(dto: any) {
     const proyecto = await prisma.proyecto.findMany({
       where: {
-        provinciaId: {
-          equals: dto.provinciaId,
-        },
+        provinciaId: dto.provinciaId,
       },
     });
     return proyecto;

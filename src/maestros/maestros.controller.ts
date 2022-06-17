@@ -34,4 +34,8 @@ export class MaestrosController {
   disableMaestro(@Body() dto: any) {
     return this._maestroService.disableMaestro(dto);
   }
+  @Post('byProjectPrivince')
+  getByProvinceProject(@Body() dto: any) {
+    return this._maestroService.getByProvinceProject(dto);
+  }
 }

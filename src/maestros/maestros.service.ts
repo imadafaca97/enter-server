@@ -12,7 +12,7 @@ export class MaestroService implements IMaestroService {
         docNumber: dto.docNumber,
         laborID: dto.laborID,
         proyectosIds: dto.proyectosIds,
-        provinciaID: dto. provinciaID,
+        provinciaID: dto.provinciaID,
         status: true,
       },
     });
@@ -29,9 +29,9 @@ export class MaestroService implements IMaestroService {
         docNumber: dto.docNumber,
         laborID: dto.laborID,
         proyectosIds: dto.proyectosIds,
-        provinciaID: dto. provinciaID,
+        provinciaID: dto.provinciaID,
         status: true,
-      }
+      },
     });
     return maestro as any;
   }
@@ -42,20 +42,20 @@ export class MaestroService implements IMaestroService {
       },
       data: {
         status: false,
-      }
+      },
     });
     return maestro as any;
   }
 
   async getMaestros() {
     let maestro = await prisma.maestro.findMany({
-      where: {status: true},
+      where: { status: true },
       include: {
         labor: true,
         proyectos: true,
         empleados: true,
         provincia: true,
-      }
+      },
     });
     return maestro as object[];
   }
@@ -83,7 +83,7 @@ export class MaestroService implements IMaestroService {
     if (dto.proyectoID) {
       queryArgs.where = {
         proyectosIds: {
-          has: dto.proyectoID
+          has: dto.proyectoID,
         },
         ...queryArgs.where,
       };
@@ -98,23 +98,37 @@ export class MaestroService implements IMaestroService {
         labor: true,
         proyectos: true,
         provincia: true,
-      }
+      },
     });
     return Maestro;
   }
-  
+
   async getByProject(dto: Maestro): Promise<object[]> {
-      const maestro = await prisma.maestro.findMany({
-          where:{
-            proyectosIds: {
-              has: dto.id
-            }
-          },include:{
-            empleados: true,
-          }
-      });
-      return maestro;
+    const maestro = await prisma.maestro.findMany({
+      where: {
+        proyectosIds: {
+          has: dto.id,
+        },
+      },
+      include: {
+        empleados: true,
+      },
+    });
+    return maestro;
   }
 
+  async getByProvinceProject(dto: any) {
+    const projects = dto.projects.map((i: any) => {
+      return i.value;
+    });
+    const maestros = await prisma.maestro.findMany({
+      where: {
+        provinciaID: dto.provinceID,
+        proyectosIds: {
+          hasEvery: projects,
+        },
+      },
+    });
+    return maestros;
+  }
 }
-

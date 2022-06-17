@@ -22,7 +22,7 @@ export class ProyectoController {
     return this.ProyectoService.editProject(dto);
   }
 
-  @Get('getByProvince')
+  @Post('getByProvince')
   getProjectsByProvince(@Body() dto : any){
     return this.ProyectoService.getProjectsByProvince(dto)
   }
