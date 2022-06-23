@@ -26,4 +26,10 @@ export class ProyectoController {
   getProjectsByProvince(@Body() dto : any){
     return this.ProyectoService.getProjectsByProvince(dto)
   }
+
+  @Post('getNameById')
+  getProjectsNameById(@Body() dto : any){
+    return this.ProyectoService.getProjectNameById(dto)
+  }
+
 }
