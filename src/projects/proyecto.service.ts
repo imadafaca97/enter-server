@@ -19,8 +19,6 @@ export class ProyectoService {
     const name = await prisma.proyecto.findFirst({
       where:{
         id: dto.id
-      },select:{
-        name: true
       }
     })
     return name
