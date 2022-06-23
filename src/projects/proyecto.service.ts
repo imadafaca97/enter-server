@@ -15,7 +15,7 @@ export class ProyectoService {
     });
     return proyecto;
   }
-  async getProjectNameById(dto : any){
+  async getProjectById(dto : any){
     const name = await prisma.proyecto.findFirst({
       where:{
         id: dto.id

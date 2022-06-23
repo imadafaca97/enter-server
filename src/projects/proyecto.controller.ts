@@ -29,7 +29,7 @@ export class ProyectoController {
 
   @Post('getNameById')
   getProjectsNameById(@Body() dto : any){
-    return this.ProyectoService.getProjectNameById(dto)
+    return this.ProyectoService.getProjectById(dto)
   }
 
 }
