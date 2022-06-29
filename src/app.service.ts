@@ -11,7 +11,9 @@ export class AppService {
     await prisma.temporalEntry.deleteMany({})
     return 'Entries of The day Deleted'
   }
-  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT, {
+    timeZone: 'America/Santo_Domingo'
+  })
   todayLates() {
     this.cleanTemporal()
   }

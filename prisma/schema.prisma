@@ -57,6 +57,8 @@ model Empleado {
   provinciaId String 
   permits Permits[]
   calificacion Int?
+  docNumber String? @unique
+  status String
   laborID String
   accidents EmployeeAccident[]
   entryID  EmployeesEntry? @relation("EntrieEmployee")
