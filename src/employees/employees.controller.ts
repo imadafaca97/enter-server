@@ -86,5 +86,10 @@ export class employeesController {
   change(@Body() dto: any){
     return this.employeesService.changeLabor();
   }
+  
+  @Post('updateStatus')
+  updateStatus(){
+    return this.employeesService.updateUser();
+  }
 
 }

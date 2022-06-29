@@ -5,19 +5,62 @@ const prisma = new PrismaClient();
 
 @Injectable({})
 export class employeesService {
-  async addEmployer(dto: Empleado) {
-    const employee = await prisma.empleado.create({
-      data: {
-        name: dto.name,
-        calificacion: dto.calificacion,
-        laborID: dto.laborID,
-        proyectosIds: dto.proyectosIds,
-        provinciaId: dto.provinciaId,
-        maestroId: dto.maestroId,
-      },
-    });
-    return employee;
-  }
+  async addEmployer(dto: any) {
+    const docNumberExists = await prisma.empleado.findFirst({
+      where:{
+        docNumber: dto.docNumber
+      }
+    })
+
+    if(docNumberExists)
+    {
+      throw new ForbiddenException('Esta cédula ya existe')
+    }else{
+      if(dto.isContractor == true){
+        const maestro = await prisma.maestro.create({
+          data:{
+            name: dto.name,
+            docNumber: dto.docNumber,
+            laborID: dto.laborID,
+            provinciaID: dto.provinciaId,
+            proyectosIds: dto.proyectosIds
+          }
+        })
+
+        const employee = await prisma.empleado.create({
+          data: {
+            name: dto.name,
+            calificacion: dto.calificacion,
+            laborID: dto.laborID,
+            proyectosIds: dto.proyectosIds,
+            provinciaId: dto.provinciaId,
+            maestroId: maestro.id,
+            docNumber: dto.docNumber,
+            status: "Activo"
+          },
+        });
+        return employee
+
+      }else{
+
+        const employee = await prisma.empleado.create({
+          data: {
+            name: dto.name,
+            calificacion: dto.calificacion,
+            laborID: dto.laborID,
+            proyectosIds: dto.proyectosIds,
+            provinciaId: dto.provinciaId,
+            maestroId: dto.maestroId,
+            docNumber: dto.docNumber,
+            status: "Activo"
+          },
+        });
+        return employee;
+      }
+     
+    }
+  } 
+
   async getall() {
     const empleados = await prisma.empleado.findMany({
       include: {
@@ -451,7 +494,11 @@ export class employeesService {
         },
       };
     }
-
+    if(dto.status){
+      queryArgs.where = {
+        status: "Activo"
+      }
+    }
     const employees = await prisma.empleado.findMany({
       ...queryArgs,
       include: {
@@ -465,10 +512,12 @@ export class employeesService {
     return employees;
   }
   async deleteEmployee(dto: any) {
-    const employee = await prisma.empleado.delete({
+    const employee = await prisma.empleado.update({
       where: {
         id: dto.id,
-      },
+      },data:{
+        status: "Inactivo"
+      }
     });
     return employee;
   }
@@ -645,6 +694,14 @@ export class employeesService {
     //     role: 
     //   }
     // })
+  }
+
+  async updateUser(){
+    await prisma.empleado.updateMany({
+      data:{
+        status: "Activo"
+      }
+    })
   }
   
   async changeRating(dto: any) {
