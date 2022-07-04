@@ -308,9 +308,10 @@ export class employeesService {
     let queryArgs = {
       where: {},
     };
-    if (dto.province) {
+    console.log(dto.maestroId)
+    if (dto.maestroId) {
       queryArgs.where = {
-        provinciaID: dto.province,
+        maestroID: dto.maestroId,
         ...queryArgs.where,
       };
     }
@@ -346,7 +347,8 @@ export class employeesService {
             labor: true,
             maestro: {
               select: {
-                labor: true
+                labor: true,
+                name: true
               }
             }
           },
@@ -477,9 +479,10 @@ export class employeesService {
         },
       };
     }
-    if (dto.provinciaId) {
+    if (dto.status) {
       queryArgs.where = {
-        provinciaId: dto.provinciaId,
+        status: dto.status,
+        ...queryArgs.where,
       };
     }
     if (dto.maestroId) {
@@ -494,11 +497,7 @@ export class employeesService {
         },
       };
     }
-    if(dto.status){
-      queryArgs.where = {
-        status: "Activo"
-      }
-    }
+   
     const employees = await prisma.empleado.findMany({
       ...queryArgs,
       include: {
