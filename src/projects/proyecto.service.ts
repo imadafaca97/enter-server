@@ -15,6 +15,10 @@ export class ProyectoService {
     });
     return proyecto;
   }
+  async get(){
+    const proyecto = await prisma.proyecto.findMany({})
+    return proyecto
+  }
   async getProjectById(dto : any){
     const name = await prisma.proyecto.findFirst({
       where:{

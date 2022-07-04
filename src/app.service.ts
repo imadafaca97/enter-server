@@ -7,7 +7,10 @@ export class AppService {
   // private readonly logger = new Logger(AppService.name);
 
   async cleanTemporal (){
+    
     const prisma = new PrismaClient()
+    const date = Date.now()
+    console.log('se borro', date)
     await prisma.temporalEntry.deleteMany({})
     return 'Entries of The day Deleted'
   }

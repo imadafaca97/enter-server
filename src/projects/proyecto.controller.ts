@@ -9,6 +9,10 @@ export class ProyectoController {
   getall() {
     return this.ProyectoService.getProjects();
   }
+  @Get('get')
+  get(){
+    return this.ProyectoService.get();
+  }
   @Post('filterprojects')
   filterProjects(@Body() dto: any) {
     return this.ProyectoService.filterProjects(dto);
