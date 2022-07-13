@@ -7,25 +7,24 @@ const prisma = new PrismaClient();
 export class employeesService {
   async addEmployer(dto: any) {
     const docNumberExists = await prisma.empleado.findFirst({
-      where:{
-        docNumber: dto.docNumber
-      }
-    })
+      where: {
+        docNumber: dto.docNumber,
+      },
+    });
 
-    if(docNumberExists)
-    {
-      throw new ForbiddenException('Esta cédula ya existe')
-    }else{
-      if(dto.isContractor == true){
+    if (docNumberExists) {
+      throw new ForbiddenException('Esta cédula ya existe');
+    } else {
+      if (dto.isContractor == true) {
         const maestro = await prisma.maestro.create({
-          data:{
+          data: {
             name: dto.name,
             docNumber: dto.docNumber,
             laborID: dto.laborID,
             provinciaID: dto.provinciaId,
-            proyectosIds: dto.proyectosIds
-          }
-        })
+            proyectosIds: dto.proyectosIds,
+          },
+        });
 
         const employee = await prisma.empleado.create({
           data: {
@@ -36,13 +35,12 @@ export class employeesService {
             provinciaId: dto.provinciaId,
             maestroId: maestro.id,
             docNumber: dto.docNumber,
-            status: "Activo"
+            contractDate: dto.contractDate,
+            status: 'Activo',
           },
         });
-        return employee
-
-      }else{
-
+        return employee;
+      } else {
         const employee = await prisma.empleado.create({
           data: {
             name: dto.name,
@@ -52,14 +50,14 @@ export class employeesService {
             provinciaId: dto.provinciaId,
             maestroId: dto.maestroId,
             docNumber: dto.docNumber,
-            status: "Activo"
+            contractDate: dto.contractDate,
+            status: 'Activo',
           },
         });
         return employee;
       }
-     
     }
-  } 
+  }
 
   async getall() {
     const empleados = await prisma.empleado.findMany({
@@ -73,10 +71,14 @@ export class employeesService {
     return empleados;
   }
 
-  async deleteAll() {
-    await prisma.empleado.deleteMany();
-    return 'Deleted All';
-  }
+  // async deleteAll() {
+  //   await prisma.empleado.deleteMany();
+  //   return 'Deleted All';
+  // }
+  // async deleteAllEntries() {
+  //   await prisma.employeesEntry.deleteMany();
+  //   return 'Deleted All Entries';
+  // }
 
   async getById(dto: Empleado) {
     const employee = await prisma.empleado.findFirst({
@@ -103,7 +105,7 @@ export class employeesService {
   }
 
   async isMaster(id: any) {
-    let maestro = await prisma.maestro.findFirst({
+    const maestro = await prisma.maestro.findFirst({
       where: {
         id: {
           equals: id,
@@ -119,7 +121,7 @@ export class employeesService {
     };
   }
   async isEmployee(id: any) {
-    let employee = await prisma.empleado.findFirst({
+    const employee = await prisma.empleado.findFirst({
       where: {
         id: {
           equals: id,
@@ -141,7 +143,7 @@ export class employeesService {
 
   async employeEntry(dto: any) {
     try {
-      let employee = await prisma.empleado.findFirst({
+      const employee = await prisma.empleado.findFirst({
         where: {
           id: {
             equals: dto.id,
@@ -152,7 +154,7 @@ export class employeesService {
         },
       });
       if (!employee) throw new ForbiddenException('no existe este empleado');
-      let entry = await prisma.temporalEntry.findFirst({
+      const entry = await prisma.temporalEntry.findFirst({
         where: {
           employeeID: employee.id,
         },
@@ -161,7 +163,7 @@ export class employeesService {
         },
       });
       if (entry) {
-        const fecha = new Date(entry!.createdAt).toLocaleDateString();
+        const fecha = new Date(entry?.createdAt).toLocaleDateString();
         const ahora = new Date().toLocaleDateString();
         if (fecha == ahora) {
           throw new ForbiddenException('Este usuario ya entro.');
@@ -215,7 +217,7 @@ export class employeesService {
   }
   async employeeExit(dto: any) {
     try {
-      let employee = await prisma.empleado.findFirst({
+      const employee = await prisma.empleado.findFirst({
         where: {
           id: {
             equals: dto.id,
@@ -224,7 +226,7 @@ export class employeesService {
       });
       if (!employee) throw new ForbiddenException('no existe este empleado');
 
-      let exit = await prisma.employeesExit.findFirst({
+      const exit = await prisma.employeesExit.findFirst({
         where: {
           employeeID: employee.id,
         },
@@ -233,7 +235,7 @@ export class employeesService {
         },
       });
       if (exit) {
-        const fecha = new Date(exit!.createdAt).toLocaleDateString();
+        const fecha = new Date(exit?.createdAt).toLocaleDateString();
         const ahora = new Date().toLocaleDateString();
         if (fecha == ahora) {
           throw new ForbiddenException('Este usuario ya salio.');
@@ -263,8 +265,8 @@ export class employeesService {
       return err + 'error';
     }
   }
-  async getEntries(dto: any) {
-    let entries = await prisma.employeesEntry.findMany({
+  async getEntries() {
+    const entries = await prisma.employeesEntry.findMany({
       include: {
         employee: {
           select: {
@@ -278,8 +280,8 @@ export class employeesService {
     });
     return entries;
   }
-  async getTemporalEntries(dto: any) {
-    let entries = await prisma.temporalEntry.findMany({
+  async getTemporalEntries() {
+    const entries = await prisma.temporalEntry.findMany({
       include: {
         employee: {
           select: {
@@ -293,22 +295,22 @@ export class employeesService {
     });
     return entries;
   }
-  async getEntriesByProject (dto : any){
-    let entries = await prisma.temporalEntry.findMany({
-      where:{
-        proyectoID:{
-          in: dto.idArray
-        }
-      }
-    })
-    return entries
+  async getEntriesByProject(dto: any) {
+    const entries = await prisma.temporalEntry.findMany({
+      where: {
+        proyectoID: {
+          in: dto.idArray,
+        },
+      },
+    });
+    return entries;
   }
 
   async filterEntries(dto: any) {
-    let queryArgs = {
+    const queryArgs = {
       where: {},
     };
-    console.log(dto.maestroId)
+    console.log(dto.maestroId);
     if (dto.maestroId) {
       queryArgs.where = {
         maestroID: dto.maestroId,
@@ -336,7 +338,7 @@ export class employeesService {
         ...queryArgs.where,
       };
     }
-    let entries = await prisma.employeesEntry.findMany({
+    const entries = await prisma.employeesEntry.findMany({
       ...queryArgs,
       include: {
         employee: {
@@ -348,9 +350,9 @@ export class employeesService {
             maestro: {
               select: {
                 labor: true,
-                name: true
-              }
-            }
+                name: true,
+              },
+            },
           },
         },
         proyecto: true,
@@ -359,7 +361,7 @@ export class employeesService {
     return entries;
   }
   async filterExits(dto: any) {
-    let queryArgs = {
+    const queryArgs = {
       where: {},
     };
     if (dto.province) {
@@ -389,7 +391,7 @@ export class employeesService {
         ...queryArgs.where,
       };
     }
-    let exits = await prisma.employeesExit.findMany({
+    const exits = await prisma.employeesExit.findMany({
       ...queryArgs,
       include: {
         employee: {
@@ -468,7 +470,7 @@ export class employeesService {
   // }
 
   async filterEmployees(dto: any) {
-    let queryArgs = {
+    const queryArgs = {
       where: {},
     };
     if (dto.search) {
@@ -497,7 +499,7 @@ export class employeesService {
         },
       };
     }
-   
+
     const employees = await prisma.empleado.findMany({
       ...queryArgs,
       include: {
@@ -514,9 +516,10 @@ export class employeesService {
     const employee = await prisma.empleado.update({
       where: {
         id: dto.id,
-      },data:{
-        status: "Inactivo"
-      }
+      },
+      data: {
+        status: 'Inactivo',
+      },
     });
     return employee;
   }
@@ -532,13 +535,14 @@ export class employeesService {
         proyectosIds: dto.proyectosIds,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
+        contractDate: dto.contractDate,
       },
     });
     return employee;
   }
 
   async getAbsentEmployee(dto: any) {
-    let queryArgs = {
+    const queryArgs = {
       where: {},
     };
     if (dto.province) {
@@ -559,7 +563,6 @@ export class employeesService {
     return employee;
   }
   async changeLabor() {
-
     // await prisma.empleado.updateMany({
     //   data: {
     //     calificacion: 1
@@ -575,7 +578,7 @@ export class employeesService {
     // })
     // console.log(empleados)
     // const empleados = await prisma.temporalEntry.deleteMany({
-      
+
     // })
     // console.log(empleados)
     // await prisma.employeesEntry.deleteMany({
@@ -629,7 +632,7 @@ export class employeesService {
     //     }
     //   })
     // })
-    
+
     //  empleados.map(async (i)=>{
     //    await prisma.employeesEntry.create({
     //      data: {
@@ -660,7 +663,7 @@ export class employeesService {
     //     }
     //   })
     // })
-    
+
     // // // console.log(maestros, proyectos, labores)
 
     // names.forEach(async (i)=>{
@@ -674,14 +677,14 @@ export class employeesService {
     //     }
     //   })
     // })
-    let hola = await prisma.empleado.findMany({
+    const hola = await prisma.empleado.findMany({
       where: {
         proyectosIds: {
-          hasEvery: ["629905327d0cd9afc7e030dd", "6299055d7d0cd9afc7e030de"]
-        }
-      }
-    })
-    return hola
+          hasEvery: ['629905327d0cd9afc7e030dd', '6299055d7d0cd9afc7e030de'],
+        },
+      },
+    });
+    return hola;
     // const employee = await prisma.empleado.findMany({
     //   where: {
     //     laborID: null
@@ -690,28 +693,28 @@ export class employeesService {
     // return employee
     // await prisma.empleado.updateMany({
     //   where: {
-    //     role: 
+    //     role:
     //   }
     // })
   }
 
-  async updateUser(){
+  async updateUser() {
     await prisma.empleado.updateMany({
-      data:{
-        status: "Activo"
-      }
-    })
+      data: {
+        status: 'Activo',
+      },
+    });
   }
-  
+
   async changeRating(dto: any) {
     await prisma.empleado.update({
       where: {
-        id: dto.id
+        id: dto.id,
       },
       data: {
-        calificacion: parseInt(dto.rating)
-      }
-    })
-    return ok
+        calificacion: parseInt(dto.rating),
+      },
+    });
+    return ok;
   }
 }

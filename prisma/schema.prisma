@@ -60,6 +60,7 @@ model Empleado {
   docNumber String? @unique
   status String
   laborID String
+  contractDate String
   accidents EmployeeAccident[]
   entryID  EmployeesEntry? @relation("EntrieEmployee")
   entry2ID TemporalEntry? @relation("EntrieEmployee2")

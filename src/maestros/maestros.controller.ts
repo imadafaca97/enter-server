@@ -20,9 +20,9 @@ export class MaestrosController {
   filterMaestro(@Body() dto: any) {
     return this._maestroService.filterMaestro(dto);
   }
-  
+
   @Post('getByProject')
-  getByProject(@Body() dto: any){
+  getByProject(@Body() dto: any) {
     return this._maestroService.getByProject(dto);
   }
 
@@ -38,4 +38,8 @@ export class MaestrosController {
   getByProvinceProject(@Body() dto: any) {
     return this._maestroService.getByProvinceProject(dto);
   }
+  // @Post('deleteAll')
+  // deleteAll(@Body() dto: any) {
+  //   return this._maestroService.deleteAll();
+  // }
 }
