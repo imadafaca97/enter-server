@@ -131,4 +131,10 @@ export class MaestroService implements IMaestroService {
     });
     return maestros;
   }
+
+  // async deleteAll() {
+  //   const master = prisma.maestro.deleteMany({})
+
+  //   return (master)
+  // }
 }

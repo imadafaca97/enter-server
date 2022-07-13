@@ -9,4 +9,5 @@ export interface IMaestroService {
   disableMaestro(dto: Maestro): Promise<object[]>;
   getByProject(dto: Maestro): Promise<object[]>;
   getByProvinceProject(dto: any): Promise<object[]>;
+  // deleteAll(): Promise<object>;
 }

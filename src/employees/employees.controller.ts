@@ -14,12 +14,12 @@ export class employeesController {
     return this.employeesService.getById(dto);
   }
   @Get('getEntries')
-  getgetEntriesById(@Query() dto: any) {
-    return this.employeesService.getEntries(dto);
+  getgetEntriesById() {
+    return this.employeesService.getEntries();
   }
   @Get('getTemporalEntries')
-  getTemporalEntries(@Query() dto: any) {
-    return this.employeesService.getTemporalEntries(dto);
+  getTemporalEntries() {
+    return this.employeesService.getTemporalEntries();
   }
   @Post('filterEntries')
   filterEntries(@Body() dto: any) {
@@ -33,7 +33,7 @@ export class employeesController {
   getEntriesByProvince(@Body() dto: any) {
     return this.employeesService.getEntriesbyProvince(dto);
   }
-  
+
   @Post('add')
   addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
@@ -51,8 +51,8 @@ export class employeesController {
     return this.employeesService.filterEmployees(dto);
   }
   @Post('getEntriesByMaestro')
-  getEntriesByMaestro(@Body() dto:any){
-    return this.employeesService.getEntriesByMaestro(dto)
+  getEntriesByMaestro(@Body() dto: any) {
+    return this.employeesService.getEntriesByMaestro(dto);
   }
 
   @Post('deleteemployee')
@@ -61,12 +61,21 @@ export class employeesController {
   }
   @Post('editemployee')
   editEmployee(@Body() dto: any) {
-    return this.employeesService.editEmployee(dto); 
-
+    return this.employeesService.editEmployee(dto);
   }
 
+  // @Post('deleteAll')
+  // deleteAll(@Body() dto: any) {
+  //   return this.employeesService.deleteAll();
+  // }
+
+  // @Post('deleteAllEntries')
+  // deleteAllEntries(@Body() dto: any) {
+  //   return this.employeesService.deleteAllEntries();
+  // }
+
   @Post('EntriesByProject')
-  getEntriesByProject(@Body() dto: any){
+  getEntriesByProject(@Body() dto: any) {
     return this.employeesService.getEntriesByProject(dto);
   }
 
@@ -75,21 +84,20 @@ export class employeesController {
     return this.employeesService.getAbsentEmployee(dto);
   }
   @Post('EntriesByLabor')
-  getEntriesByLabor(@Body() dto: any){
+  getEntriesByLabor(@Body() dto: any) {
     return this.employeesService.getEntriesByLabor(dto);
   }
   @Post('changeRating')
-  changeRating(@Body() dto: any){
+  changeRating(@Body() dto: any) {
     return this.employeesService.changeRating(dto);
   }
   @Get('hola')
-  change(@Body() dto: any){
+  change(@Body() dto: any) {
     return this.employeesService.changeLabor();
   }
-  
+
   @Post('updateStatus')
-  updateStatus(){
+  updateStatus() {
     return this.employeesService.updateUser();
   }
-
 }
