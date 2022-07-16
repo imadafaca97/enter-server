@@ -1,3 +1,4 @@
+import { getPath } from './../utils/fileManagement';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 import { ok } from 'assert';
@@ -87,6 +88,22 @@ export class employeesService {
       },
     });
     return employee;
+  }
+
+  async getEmployeeEntryInfo(dto: Empleado) {
+    const employee = await prisma.empleado.findFirst({
+      where: {
+        id: dto.id,
+      },
+    });
+
+    if (employee) {
+      const newObj = {
+        employee: employee,
+        employeePhoto: getPath(employee.id),
+      };
+      return newObj;
+    }
   }
 
   async updateEmployee(dto: Empleado) {
@@ -280,6 +297,7 @@ export class employeesService {
     });
     return entries;
   }
+
   async getTemporalEntries() {
     const entries = await prisma.temporalEntry.findMany({
       include: {

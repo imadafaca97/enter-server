@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { employeesService } from './employees.service';
 
 @Controller('employees')
@@ -12,6 +22,10 @@ export class employeesController {
   @Get('getById')
   getById(@Query() dto: any) {
     return this.employeesService.getById(dto);
+  }
+  @Get('getEntryInfo')
+  getEntryInfo(@Query() dto: any) {
+    return this.employeesService.getEmployeeEntryInfo(dto);
   }
   @Get('getEntries')
   getgetEntriesById() {
@@ -33,10 +47,43 @@ export class employeesController {
   getEntriesByProvince(@Body() dto: any) {
     return this.employeesService.getEntriesbyProvince(dto);
   }
-
   @Post('add')
   addEmployee(@Body() dto: any) {
     return this.employeesService.addEmployer(dto);
+  }
+  @Post('upload/:id')
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      storage: diskStorage({
+        destination: './upload',
+        filename(req, file, callback) {
+          const newName = req.params.id;
+          const mimeType = file.mimetype;
+
+          const extension = mimeType.slice(mimeType.indexOf('/') + 1).trim();
+
+          const extensionName =
+            !extension.includes('png') ||
+            !extension.includes('jpeg') ||
+            !extension.includes('jpg')
+              ? 'png'
+              : extension;
+
+          callback(null, `${newName}.${extensionName}`);
+        },
+      }),
+    }),
+  )
+  uploadSingle(@UploadedFile() file: any) {
+    const response = {
+      message: 'File uploaded successfully!',
+      data: {
+        originalname: file.originalname,
+        filename: file.filename,
+      },
+      image: file,
+    };
+    return response;
   }
   @Post('employeeEntry')
   employeEntry(@Body() dto: any) {
@@ -92,7 +139,7 @@ export class employeesController {
     return this.employeesService.changeRating(dto);
   }
   @Get('hola')
-  change(@Body() dto: any) {
+  change() {
     return this.employeesService.changeLabor();
   }
 
