@@ -87,11 +87,23 @@ export class employeesService {
         id: dto.id,
       },
     });
+    return employee;
+  }
+
+  async getEmployeeEntryInfo(dto: Empleado) {
+    const employee = await prisma.empleado.findFirst({
+      where: {
+        id: dto.id,
+      },
+    });
 
     if (employee) {
-      console.log(getPath(employee.id));
+      const newObj = {
+        employee: employee,
+        employeePhoto: getPath(employee.id),
+      };
+      return newObj;
     }
-    return employee;
   }
 
   async updateEmployee(dto: Empleado) {

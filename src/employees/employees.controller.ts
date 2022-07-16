@@ -23,6 +23,10 @@ export class employeesController {
   getById(@Query() dto: any) {
     return this.employeesService.getById(dto);
   }
+  @Get('getEntryInfo')
+  getEntryInfo(@Query() dto: any) {
+    return this.employeesService.getEmployeeEntryInfo(dto);
+  }
   @Get('getEntries')
   getgetEntriesById() {
     return this.employeesService.getEntries();
