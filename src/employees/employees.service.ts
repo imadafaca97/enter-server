@@ -103,6 +103,8 @@ export class employeesService {
         employeePhoto: getPath(employee.id),
       };
       return newObj;
+    } else {
+      return new ForbiddenException('El empleado no existe');
     }
   }
 
