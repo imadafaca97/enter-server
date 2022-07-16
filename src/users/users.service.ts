@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class UsersService implements IUsersService {
-  async addUser(dto: Users) {
+  async addUser(dto: any) {
     const user = await prisma.users.create({
       data: {
         name: dto.name,
@@ -17,7 +17,7 @@ export class UsersService implements IUsersService {
         password: dto.password,
         userCreated: true,
         roleID: dto.roleID,
-        proyectoID: dto.proyectoID? dto.proyectoID : null,
+        proyectoID: dto.proyectoID ? dto.proyectoID : null,
       },
     });
     return user;
@@ -148,7 +148,7 @@ export class UsersService implements IUsersService {
           },
         },
         password: true,
-        proyectoID: true
+        proyectoID: true,
       },
     });
 

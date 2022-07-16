@@ -26,10 +26,8 @@ import { VisitModule } from './visits/visits.module';
     laborModule,
     MaestrosModule,
     VisitModule,
-    ScheduleModule.forRoot()
+    ScheduleModule.forRoot(),
   ],
-  providers:[
-    AppService
-  ]
+  providers: [AppService],
 })
 export class AppModule {}

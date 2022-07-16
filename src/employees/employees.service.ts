@@ -1,3 +1,4 @@
+import { getPath } from './../utils/fileManagement';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 import { ok } from 'assert';
@@ -86,6 +87,10 @@ export class employeesService {
         id: dto.id,
       },
     });
+
+    if (employee) {
+      console.log(getPath(employee.id));
+    }
     return employee;
   }
 
@@ -280,6 +285,7 @@ export class employeesService {
     });
     return entries;
   }
+
   async getTemporalEntries() {
     const entries = await prisma.temporalEntry.findMany({
       include: {

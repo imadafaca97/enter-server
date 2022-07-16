@@ -33,11 +33,10 @@ export class VisitService {
     return visits;
   }
   async addVisit(dto: Visit) {
-   
     await prisma.visit.create({
-      data:{
-        ...dto
-      }
+      data: {
+        ...dto,
+      },
     });
     return ok;
   }
@@ -48,70 +47,74 @@ export class VisitService {
       },
     });
   }
-  async deleteAll(){
-    await prisma.visit.deleteMany({})
-    return ok
+  async deleteAll() {
+    await prisma.visit.deleteMany({});
+    return ok;
   }
-async visitEntry(dto : any){
-  let visitante;
-  
-  try{
-    visitante = await prisma.visit.findFirst({
-      where:{
-        id: dto.id
+  async visitEntry(dto: any) {
+    let visitante;
+
+    try {
+      visitante = await prisma.visit.findFirst({
+        where: {
+          id: dto.id,
+        },
+      });
+    } catch (Error) {
+      return { message: 'Esta Visita no existe' };
+    }
+
+    const today = new Date();
+    if (visitante) {
+      if (visitante.status == 'Activo') {
+        await prisma.visit.update({
+          where: {
+            id: visitante.id,
+          },
+          data: {
+            status: 'Salida',
+          },
+        });
+        return { message: 'Salida registrada Correctamente' };
       }
-    })    
-  }catch(Error){
-    return ({message:"Esta Visita no existe"})
+
+      if (visitante.status == 'Salida') {
+        return { message: 'La visita ya fue realizada' };
+      }
+
+      if (
+        visitante.status == 'Caducado' ||
+        visitante.final.toLocaleString() < today.toLocaleString()
+      ) {
+        await prisma.visit.update({
+          where: {
+            id: dto.id,
+          },
+          data: {
+            status: 'Caducado',
+          },
+        });
+        return { message: 'Esta visita esta caducada' };
+      } else {
+        await prisma.visit.update({
+          where: {
+            id: dto.id,
+          },
+          data: {
+            status: 'Activo',
+          },
+        });
+      }
+    } else {
+      return { message: 'Esta visita no esta registrada' };
+    }
+    return visitante;
   }
 
-  const today = new Date()
-  if(visitante) {
-
-    if(visitante.status == "Activo"){
-      await prisma.visit.update({
-        where:{
-          id: visitante.id
-        },data:{
-          status: "Salida"
-        },
-      })
-      return ({message: "Salida registrada Correctamente"})
-    }
-
-    if(visitante.status == "Salida"){
-      return ({message: "La visita ya fue realizada"})
-    }
-
-    if( visitante.status == "Caducado" || visitante.final.toLocaleString() < today.toLocaleString()){
-      await prisma.visit.update({
-        where:{
-          id: dto.id
-        },data:{
-          status: "Caducado"
-        },
-      })
-      return({message: "Esta visita esta caducada"})
-      
-    }else{
-      await prisma.visit.update({
-        where:{
-          id: dto.id
-        },data:{
-          status: "Activo"
-        }
-      })
-    }
-  }else{
-    return ({message: "Esta visita no esta registrada"})
-  }
-  return visitante;
-}
-
-  async editVisit(dto: any){
+  async editVisit(dto: any) {
     await prisma.visit.update({
-      where:{
-        id: dto.id
+      where: {
+        id: dto.id,
       },
       data: {
         projectID: dto.projectID,
@@ -123,6 +126,6 @@ async visitEntry(dto : any){
         start: dto.start,
         final: dto.final,
       },
-    })
+    });
   }
 }
