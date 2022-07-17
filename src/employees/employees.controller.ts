@@ -24,7 +24,7 @@ export class employeesController {
     return this.employeesService.getById(dto);
   }
   @Get('getEntryInfo')
-  getEntryInfo(@Query() dto: any) {
+  getEntryInfo(@Body() dto: any) {
     return this.employeesService.getEmployeeEntryInfo(dto);
   }
   @Get('getEntries')

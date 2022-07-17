@@ -90,8 +90,8 @@ export class employeesService {
     return employee;
   }
 
-  async getEmployeeEntryInfo(dto: Empleado) {
-    const employee = await prisma.empleado.findFirst({
+  async getEmployeeEntryInfo(dto: any) {
+    const employee = await prisma.empleado.findUnique({
       where: {
         id: dto.id,
       },
