@@ -1,11 +1,16 @@
+import { createReadStream } from 'fs';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { join } from 'path';
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
+  Param,
   Post,
   Query,
+  StreamableFile,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -23,7 +28,7 @@ export class employeesController {
   getById(@Query() dto: any) {
     return this.employeesService.getById(dto);
   }
-  @Get('getEntryInfo')
+  @Post('getEntryInfo')
   getEntryInfo(@Body() dto: any) {
     return this.employeesService.getEmployeeEntryInfo(dto);
   }
@@ -35,6 +40,19 @@ export class employeesController {
   getTemporalEntries() {
     return this.employeesService.getTemporalEntries();
   }
+  @Get('getPhotoFile/:_id')
+  getFile(@Param() _id: any): any {
+    console.log('Inside the photo File', _id);
+    try {
+      const file = createReadStream(
+        join(process.cwd(), `./upload/${_id._id}.png`),
+      );
+      return new StreamableFile(file);
+    } catch (error) {
+      return new ForbiddenException('No hay Files');
+    }
+  }
+
   @Post('filterEntries')
   filterEntries(@Body() dto: any) {
     return this.employeesService.filterEntries(dto);
