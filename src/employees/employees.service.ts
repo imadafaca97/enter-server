@@ -1,4 +1,3 @@
-import { getPath } from './../utils/fileManagement';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 import { ok } from 'assert';
@@ -96,11 +95,11 @@ export class employeesService {
         id: dto.id,
       },
     });
-
+    const path = 'http://119.8.10.22/uploads/';
     if (employee) {
       const newObj = {
         employee: employee,
-        employeePhoto: getPath(employee.id),
+        employeePhoto: `${path}${employee.id}.png`,
       };
       return newObj;
     } else {
