@@ -527,6 +527,9 @@ export class employeesService {
         labor: true,
         maestro: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     return employees;
