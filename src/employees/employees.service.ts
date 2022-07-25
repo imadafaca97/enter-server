@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 import { ok } from 'assert';
+import { throwError } from 'rxjs';
 const prisma = new PrismaClient();
 
 @Injectable({})
@@ -172,6 +173,9 @@ export class employeesService {
         },
       });
       if (!employee) throw new ForbiddenException('no existe este empleado');
+      if (employee.status == 'Inactivo')
+        throw new ForbiddenException('Este usuario está inactivo');
+
       const entry = await prisma.temporalEntry.findFirst({
         where: {
           employeeID: employee.id,
@@ -180,6 +184,7 @@ export class employeesService {
           createdAt: 'desc',
         },
       });
+
       if (entry) {
         const fecha = new Date(entry?.createdAt).toLocaleDateString();
         const ahora = new Date().toLocaleDateString();
