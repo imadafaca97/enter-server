@@ -1,7 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 import { ok } from 'assert';
-import e from 'express';
 const prisma = new PrismaClient();
 
 @Injectable({})
