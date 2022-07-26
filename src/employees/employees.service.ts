@@ -1,6 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Empleado, PrismaClient } from '@prisma/client';
 import { ok } from 'assert';
+import e from 'express';
 const prisma = new PrismaClient();
 
 @Injectable({})
@@ -539,14 +540,31 @@ export class employeesService {
     return employees;
   }
   async deleteEmployee(dto: any) {
-    const employee = await prisma.empleado.update({
+    const employee = await prisma.empleado.findUnique({
       where: {
         id: dto.id,
       },
-      data: {
-        status: 'Inactivo',
-      },
     });
+
+    if (employee?.status == 'Activo') {
+      await prisma.empleado.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          status: 'Inactivo',
+        },
+      });
+    } else {
+      await prisma.empleado.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          status: 'Activo',
+        },
+      });
+    }
     return employee;
   }
   async editEmployee(dto: any) {
