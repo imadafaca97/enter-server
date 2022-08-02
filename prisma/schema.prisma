@@ -169,8 +169,6 @@ model EmployeeAccident {
   projectID String
   description String
   adminReviewed Boolean
-  images Image[]
-  image String?
   status Boolean
   @@fulltext([employeeID])
   employee Empleado @relation(fields: [employeeID], references: [id], onUpdate: Cascade, onDelete: Cascade)
