@@ -8,7 +8,11 @@ export class accidentsService implements IEmployeeAccident {
   async addAccident(dto: any): Promise<EmployeeAccident> {
     const accident = await prisma.employeeAccident.create({
       data: {
-        ...dto,
+        adminReviewed: dto.adminReviewed,
+        employeeID: dto.employeeID,
+        projectID: dto.projectID,
+        provinceID: dto.provinceID,
+        description: dto.description,
         status: true,
       },
     });
@@ -82,8 +86,6 @@ export class accidentsService implements IEmployeeAccident {
         },
         description: true,
         adminReviewed: true,
-        images: true,
-        image: true,
       },
     });
     return accidents;
@@ -99,7 +101,6 @@ export class accidentsService implements IEmployeeAccident {
         projectID: dto.projectID,
         description: dto.description,
         adminReviewed: dto.adminReviewed,
-        image: dto.image,
         status: true,
       },
     });

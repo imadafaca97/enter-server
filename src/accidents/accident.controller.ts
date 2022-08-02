@@ -4,6 +4,8 @@ import {
   // Get,
   Inject,
   Post,
+  UseInterceptors,
+  UploadedFile,
   // Response,
   // Res,
   // // StreamableFile,
@@ -12,6 +14,9 @@ import {
 } from '@nestjs/common';
 import { IEmployeeAccident } from './i-accidents.service';
 import { EmployeeAccident } from '@prisma/client';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 // import { FileInterceptor } from '@nestjs/platform-express';
 // import { diskStorage } from 'multer';
 // import * as path from 'path';
@@ -40,6 +45,40 @@ export class AccidentsController {
   @Post('allAccidents')
   accidentList(@Body() dto: any) {
     return this._accidentsService.accidentList(dto);
+  }
+  @Post('upload/:id')
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      storage: diskStorage({
+        destination: './upload/accidents',
+        filename(req, file, callback) {
+          const newName = req.params.id;
+          const mimeType = file.mimetype;
+
+          const extension = mimeType.slice(mimeType.indexOf('/') + 1).trim();
+
+          const extensionName =
+            !extension.includes('png') ||
+            !extension.includes('jpeg') ||
+            !extension.includes('jpg')
+              ? 'png'
+              : extension;
+
+          callback(null, `${newName}.${extensionName}`);
+        },
+      }),
+    }),
+  )
+  uploadSingle(@UploadedFile() file: any) {
+    const response = {
+      message: 'File uploaded successfully!',
+      data: {
+        originalname: file.originalname,
+        filename: file.filename,
+      },
+      image: file,
+    };
+    return response;
   }
   // @Post('files')
   // @UseInterceptors(
