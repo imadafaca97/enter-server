@@ -318,6 +318,7 @@ export class employeesService {
     });
     return entries;
   }
+
   async getEntriesByProject(dto: any) {
     const entries = await prisma.temporalEntry.findMany({
       where: {
@@ -363,6 +364,7 @@ export class employeesService {
     }
     const entries = await prisma.employeesEntry.findMany({
       ...queryArgs,
+      take: dto.limit,
       include: {
         employee: {
           select: {

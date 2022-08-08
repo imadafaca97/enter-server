@@ -15,17 +15,17 @@ export class ProyectoService {
     });
     return proyecto;
   }
-  async get(){
-    const proyecto = await prisma.proyecto.findMany({})
-    return proyecto
+  async get() {
+    const proyecto = await prisma.proyecto.findMany({});
+    return proyecto;
   }
-  async getProjectById(dto : any){
+  async getProjectById(dto: any) {
     const name = await prisma.proyecto.findFirst({
-      where:{
-        id: dto.id
-      }
-    })
-    return name
+      where: {
+        id: dto.id,
+      },
+    });
+    return name;
   }
   async editProject(dto: any) {
     const proyecto = await prisma.proyecto.update({
@@ -43,9 +43,9 @@ export class ProyectoService {
   }
   async getProjects() {
     const proyecto = await prisma.proyecto.findMany({
-      include:{
+      include: {
         maestros: true,
-      }
+      },
     });
     return proyecto;
   }

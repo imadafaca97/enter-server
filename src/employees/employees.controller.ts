@@ -160,7 +160,6 @@ export class employeesController {
   change() {
     return this.employeesService.changeLabor();
   }
-
   @Post('updateStatus')
   updateStatus() {
     return this.employeesService.updateUser();
