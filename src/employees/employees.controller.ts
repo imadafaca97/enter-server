@@ -5,6 +5,7 @@ import { join } from 'path';
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Param,
@@ -163,5 +164,13 @@ export class employeesController {
   @Post('updateStatus')
   updateStatus() {
     return this.employeesService.updateUser();
+  }
+  @Delete()
+  deleteTemporalEntries(){
+    return this.employeesService.deleteAllTemporalEntries();
+  }
+  @Delete('employeesList')
+  deleteEmployeesList() {
+    return this.employeesService.deleteAll();
   }
 }

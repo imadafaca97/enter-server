@@ -71,14 +71,14 @@ export class employeesService {
     return empleados;
   }
 
-  // async deleteAll() {
-  //   await prisma.empleado.deleteMany();
-  //   return 'Deleted All';
-  // }
-  // async deleteAllEntries() {
-  //   await prisma.employeesEntry.deleteMany();
-  //   return 'Deleted All Entries';
-  // }
+  async deleteAll() {
+    await prisma.empleado.deleteMany();
+    return 'Deleted All';
+  }
+  async deleteAllTemporalEntries() {
+    await prisma.maestro.deleteMany();
+    return 'Deleted All Entries';
+  }
 
   async getById(dto: Empleado) {
     const employee = await prisma.empleado.findFirst({
