@@ -165,12 +165,12 @@ export class employeesController {
   updateStatus() {
     return this.employeesService.updateUser();
   }
-  @Delete()
-  deleteTemporalEntries(){
-    return this.employeesService.deleteAllTemporalEntries();
-  }
-  @Delete('employeesList')
-  deleteEmployeesList() {
-    return this.employeesService.deleteAll();
-  }
+  // @Delete()
+  // deleteTemporalEntries(){
+  //   return this.employeesService.deleteAllTemporalEntries();
+  // }
+  // @Delete('employeesList')
+  // deleteEmployeesList() {
+  //   return this.employeesService.deleteAll();
+  // }
 }
