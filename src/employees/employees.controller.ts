@@ -5,7 +5,6 @@ import { join } from 'path';
 import {
   Body,
   Controller,
-  Delete,
   ForbiddenException,
   Get,
   Param,
