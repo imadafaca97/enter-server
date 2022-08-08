@@ -73,7 +73,7 @@ export class employeesService {
 
   async deleteAll() {
     await prisma.empleado.deleteMany();
-    return 'Deleted All';
+    return 'Deleted';
   }
   async deleteAllTemporalEntries() {
     await prisma.maestro.deleteMany();
