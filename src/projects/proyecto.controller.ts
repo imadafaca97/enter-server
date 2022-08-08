@@ -1,4 +1,4 @@
-import {  Body,Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ProyectoService } from './proyecto.service';
 
 @Controller('project')
@@ -10,7 +10,7 @@ export class ProyectoController {
     return this.ProyectoService.getProjects();
   }
   @Get('get')
-  get(){
+  get() {
     return this.ProyectoService.get();
   }
   @Post('filterprojects')
@@ -27,13 +27,12 @@ export class ProyectoController {
   }
 
   @Post('getByProvince')
-  getProjectsByProvince(@Body() dto : any){
-    return this.ProyectoService.getProjectsByProvince(dto)
+  getProjectsByProvince(@Body() dto: any) {
+    return this.ProyectoService.getProjectsByProvince(dto);
   }
 
   @Post('getById')
-  getProjectsNameById(@Body() dto : any){
-    return this.ProyectoService.getProjectById(dto)
+  getProjectsNameById(@Body() dto: any) {
+    return this.ProyectoService.getProjectById(dto);
   }
-
 }
