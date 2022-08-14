@@ -7,6 +7,7 @@ import {
   Controller,
   ForbiddenException,
   Get,
+  Delete,
   Param,
   Post,
   Query,
@@ -164,10 +165,10 @@ export class employeesController {
   updateStatus() {
     return this.employeesService.updateUser();
   }
-  // @Delete()
-  // deleteTemporalEntries(){
-  //   return this.employeesService.deleteAllTemporalEntries();
-  // }
+  @Delete()
+  deleteTemporalEntries(){
+    return this.employeesService.deleteAllTemporalEntries();
+  }
   // @Delete('employeesList')
   // deleteEmployeesList() {
   //   return this.employeesService.deleteAll();

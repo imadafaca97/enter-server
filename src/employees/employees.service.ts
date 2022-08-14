@@ -75,10 +75,10 @@ export class employeesService {
   //   await prisma.empleado.deleteMany();
   //   return 'Deleted';
   // }
-  // async deleteAllTemporalEntries() {
-  //   await prisma.maestro.deleteMany();
-  //   return 'Deleted All Entries';
-  // }
+  async deleteAllTemporalEntries() {
+    await prisma.employeesEntry.deleteMany();
+    return 'Deleted All Entries';
+  }
 
   async getById(dto: Empleado) {
     const employee = await prisma.empleado.findFirst({
@@ -530,6 +530,7 @@ export class employeesService {
 
     const employees = await prisma.empleado.findMany({
       ...queryArgs,
+      take: dto.limit,
       include: {
         provincia: true,
         proyectos: true,
@@ -581,6 +582,7 @@ export class employeesService {
         laborID: dto.laborID,
         calificacion: dto.calificacion,
         proyectosIds: dto.proyectosIds,
+        docNumber: dto.docNumber,
         provinciaId: dto.provinciaId,
         maestroId: dto.maestroId,
         contractDate: dto.contractDate,
